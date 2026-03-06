@@ -1,47 +1,88 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Menu, X, ShoppingBag } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X, ShoppingBag, Tent, LayoutDashboard, Home } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
+import gsap from 'gsap';
 
 export function Navbar() {
-    const [isScrolled, setIsScrolled] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const pathname = usePathname();
+    const items = useCartStore((state) => state.items);
+    const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
     const [mounted, setMounted] = useState(false);
-    const totalItems = useCartStore((state) => state.getTotalItems());
+    const mobileMenuRef = useRef<HTMLDivElement>(null);
 
     const isAdminRoute = pathname.startsWith('/admin') && pathname !== '/admin/login';
 
     useEffect(() => {
         setMounted(true);
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            setScrolled(window.scrollY > 20);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Animate mobile menu
+    useEffect(() => {
+        if (!mobileMenuRef.current) return;
+        const ctx = gsap.context(() => {
+            if (mobileMenuOpen) {
+                gsap.fromTo(
+                    mobileMenuRef.current,
+                    { opacity: 0, y: -20 },
+                    { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out' }
+                );
+                gsap.fromTo(
+                    '.mobile-nav-link',
+                    { opacity: 0, x: -20 },
+                    { opacity: 1, x: 0, duration: 0.3, stagger: 0.06, ease: 'power2.out', delay: 0.1 }
+                );
+            }
+        }, mobileMenuRef);
+        return () => ctx.revert();
+    }, [mobileMenuOpen]);
+
+    // Lock body scroll when mobile menu open
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [mobileMenuOpen]);
+
     if (isAdminRoute) return null;
+
+    const navLinks = [
+        { label: 'Início', href: '/' },
+        { label: 'Equipamentos', href: '/catalogo' },
+    ];
 
     return (
         <header
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-                ? 'bg-slate-900/95 backdrop-blur-md shadow-xl border-b border-white/5 py-3'
-                : 'bg-slate-900/70 backdrop-blur-sm py-4'
+            className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled
+                ? 'bg-slate-950 backdrop-blur-3xl shadow-2xl border-b border-white/20 py-4'
+                : 'bg-slate-950/85 backdrop-blur-md py-8 border-b border-transparent'
                 }`}
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-3 group">
-                        <div className="relative w-10 h-10 overflow-hidden rounded-full shadow-[0_0_12px_rgba(234,88,12,0.35)] border border-white/10 group-hover:border-orange-500/50 transition-all duration-300 group-hover:scale-105">
-                            <img
+                    <Link href="/" className="flex items-center gap-3 group magnetic-btn">
+                        <div className="relative w-14 h-14 overflow-hidden rounded-full shadow-[0_0_15px_rgba(234,88,12,0.4)] border border-white/20 group-hover:border-orange-500/50 transition-all duration-300">
+                            <Image
                                 src="/ghost_camp_premium_logo.png"
                                 alt="Ghost Camp Logo"
-                                className="w-full h-full object-cover"
+                                fill
+                                className="object-cover"
+                                sizes="56px"
                             />
                         </div>
                         <span className="text-xl font-black tracking-tight text-white drop-shadow-md hidden sm:block">
@@ -49,68 +90,66 @@ export function Navbar() {
                         </span>
                     </Link>
 
-                    {/* Nav Desktop - Ultra Spaced for Premium Look with Style Fallback */}
-                    <nav
-                        className="hidden md:flex items-center"
-                        style={{ gap: '3.5rem' }}
-                        suppressHydrationWarning
-                    >
-                        <Link
-                            href="/"
-                            className={`px-6 py-3 rounded-2xl font-black transition-all text-sm tracking-widest uppercase ${pathname === '/'
-                                ? 'text-white bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.1)] border border-white/20'
-                                : 'text-slate-100 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
-                                }`}
-                            style={{ color: pathname === '/' ? '#fff' : '#f1f5f9', opacity: 1 }}
-                            suppressHydrationWarning
-                        >
-                            Início
-                        </Link>
-                        <Link
-                            href="/catalogo"
-                            className={`px-6 py-3 rounded-2xl font-black transition-all text-sm tracking-widest uppercase ${pathname === '/catalogo'
-                                ? 'text-orange-400 bg-orange-500/10 shadow-[0_0_40px_rgba(249,115,22,0.2)] border border-orange-500/30'
-                                : 'text-slate-100 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
-                                }`}
-                            style={{ color: pathname === '/catalogo' ? '#fb923c' : '#f1f5f9', opacity: 1 }}
-                            suppressHydrationWarning
-                        >
-                            Equipamentos
-                        </Link>
+                    {/* Nav Desktop */}
+                    <nav className="hidden md:flex items-center gap-8 lg:gap-12">
+                        {navLinks.map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`magnetic-btn slide-bg px-5 py-2.5 rounded-2xl font-black transition-all text-base tracking-widest uppercase drop-shadow-sm ${isActive
+                                        ? '!text-white bg-white/10 shadow-[0_0_30px_rgba(255,255,255,0.08)] border border-white/20'
+                                        : '!text-white hover:bg-white/5 border border-transparent hover:border-white/10'
+                                        }`}
+                                >
+                                    {link.label}
+                                </Link>
+                            );
+                        })}
 
-                        <div className="w-px h-5 bg-slate-700 mx-3"></div>
+                        <div className="w-px h-5 bg-white/20" />
 
-                        <Link href="/mochila" className="relative p-3 text-white hover:bg-white/5 rounded-xl transition-all group">
-                            <ShoppingBag className="w-5 h-5 text-white" />
-                            {mounted && totalItems > 0 && (
-                                <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-600 text-white text-[10px] font-bold border-2 border-slate-900 shadow-sm">
-                                    {totalItems}
+                        <Link
+                            href="/mochila"
+                            className="relative glass p-3 rounded-full hover:bg-orange-600 hover:border-orange-500 transition-all cursor-pointer group"
+                            aria-label="Ver mochila"
+                        >
+                            <ShoppingBag className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
+                            {itemCount > 0 && (
+                                <span className="absolute -top-1.5 -right-1.5 bg-orange-500 text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border-2 border-slate-950 animate-in zoom-in duration-300">
+                                    {itemCount}
+                                    <span className="absolute inset-0 rounded-full bg-orange-500 animate-ping opacity-40"></span>
                                 </span>
                             )}
                         </Link>
 
                         <Link
                             href="/admin/login"
-                            className="ml-2 text-xs font-bold text-white hover:text-white transition-all bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-full border border-white/20 hover:border-white/40 uppercase tracking-widest"
-                            style={{ color: '#fff' }}
+                            className="magnetic-btn slide-bg text-sm font-black !text-white hover:text-white transition-all bg-white/5 hover:bg-white/10 px-6 py-3 rounded-full border border-white/20 hover:border-white/40 uppercase tracking-widest"
                         >
                             Área do Lojista
                         </Link>
                     </nav>
 
-                    {/* Mobile */}
-                    <div className="md:hidden flex items-center gap-2">
-                        <Link href="/mochila" className="relative p-2 text-white hover:text-white transition-colors">
+                    {/* Mobile Actions */}
+                    <div className="md:hidden flex items-center gap-3">
+                        <Link
+                            href="/mochila"
+                            className="relative p-3 text-white hover:text-white transition-colors magnetic-btn"
+                            aria-label="Minha Mochila"
+                        >
                             <ShoppingBag className="w-6 h-6" />
-                            {mounted && totalItems > 0 && (
+                            {mounted && itemCount > 0 && (
                                 <span className="absolute -top-0 -right-0 flex h-5 w-5 items-center justify-center rounded-full bg-orange-600 text-white text-[10px] font-bold border-2 border-slate-900 shadow-sm">
-                                    {totalItems}
+                                    {itemCount}
                                 </span>
                             )}
                         </Link>
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="p-2 text-white hover:text-white cursor-pointer"
+                            className="p-3 text-white hover:text-white cursor-pointer magnetic-btn"
+                            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
                         >
                             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
@@ -118,32 +157,75 @@ export function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu - Fullscreen Overlay */}
             {mobileMenuOpen && (
-                <div className="md:hidden absolute top-full left-0 w-full bg-slate-900/98 backdrop-blur-lg border-t border-white/5 shadow-2xl py-4 flex flex-col px-5 gap-1 pb-6">
-                    <Link
-                        href="/"
-                        className="text-base font-medium text-slate-200 p-3 hover:bg-white/5 rounded-xl transition-colors"
+                <>
+                    {/* Backdrop */}
+                    <div
+                        className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
                         onClick={() => setMobileMenuOpen(false)}
+                    />
+
+                    {/* Menu Panel */}
+                    <div
+                        ref={mobileMenuRef}
+                        className="md:hidden fixed inset-x-0 top-0 z-50 bg-slate-900/98 backdrop-blur-2xl border-b border-white/5 shadow-2xl"
+                        style={{ paddingTop: 'env(safe-area-inset-top)' }}
                     >
-                        Início
-                    </Link>
-                    <Link
-                        href="/catalogo"
-                        className="text-base font-medium text-orange-400 p-3 hover:bg-white/5 rounded-xl transition-colors"
-                        onClick={() => setMobileMenuOpen(false)}
-                    >
-                        Equipamentos
-                    </Link>
-                    <hr className="border-slate-800 my-2" />
-                    <Link
-                        href="/admin/login"
-                        className="text-sm font-medium text-slate-500 p-3 hover:bg-white/5 rounded-xl transition-colors"
-                        onClick={() => setMobileMenuOpen(false)}
-                    >
-                        Área do Lojista
-                    </Link>
-                </div>
+                        {/* Close Button */}
+                        <div className="flex justify-between items-center px-5 py-4 border-b border-white/5">
+                            <span className="text-lg font-black text-white">Ghost Camp</span>
+                            <button
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="p-3 text-white cursor-pointer"
+                                aria-label="Fechar menu"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
+                        </div>
+
+                        {/* Links */}
+                        <nav className="flex flex-col px-6 py-8 gap-2">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`mobile-nav-link text-lg font-semibold p-4 rounded-2xl transition-colors ${pathname === link.href
+                                        ? 'text-orange-400 bg-orange-500/10 border border-orange-500/20'
+                                        : 'text-white hover:bg-white/5'
+                                        }`}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+
+                            <Link
+                                href="/mochila"
+                                className="mobile-nav-link text-lg font-semibold text-white p-4 hover:bg-white/5 rounded-2xl transition-colors flex items-center gap-3"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                <ShoppingBag className="w-5 h-5 text-orange-500" />
+                                Minha Mochila
+                                {mounted && itemCount > 0 && (
+                                    <span className="ml-auto bg-orange-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                                        {itemCount}
+                                    </span>
+                                )}
+                            </Link>
+
+                            <hr className="border-slate-800 my-4" />
+
+                            <Link
+                                href="/admin/login"
+                                className="mobile-nav-link text-sm font-medium text-slate-400 p-4 hover:bg-white/5 rounded-2xl transition-colors"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                Área do Lojista
+                            </Link>
+                        </nav>
+                    </div>
+                </>
             )}
         </header>
     );

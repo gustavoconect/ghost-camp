@@ -136,29 +136,28 @@ export function Seeder() {
     const handleSeed = async () => {
         if (!window.confirm(`Isso irá apagar os equipamentos atuais e importar ${products.length} itens do Quero Acampar. Deseja continuar?`)) return;
 
+        console.log("🚀 Iniciando Sincronização Mágica...");
         setLoading(true);
         setStatus('loading');
         let count = 0;
         try {
             // 1. Limpar atuais
+            console.log("🧹 Limpando coleção 'equipments'...");
             const existing = await getDocs(collection(db, 'equipments'));
+            console.log(`🗑️ Encontrados ${existing.docs.length} itens para apagar.`);
+
             for (const d of existing.docs) {
                 await deleteDoc(doc(db, 'equipments', d.id));
             }
+            console.log("✅ Limpeza concluída.");
 
+            // 2. Importar novos
             for (const prod of products) {
-                // Fetch and upload image safer
-                let finalImageUrl = prod.img;
-                try {
-                    const res = await fetch(prod.img);
-                    const blob = await res.blob();
-                    const fileName = `equipments/seed-${Date.now()}-${count}.png`;
-                    const storageRef = ref(storage, fileName);
-                    await uploadBytes(storageRef, blob);
-                    finalImageUrl = await getDownloadURL(storageRef);
-                } catch (imgError) {
-                    console.warn(`Erro no upload da imagem para ${prod.name}, usando URL original`, imgError);
-                }
+                console.log(`📦 Processando (${count + 1}/${products.length}): ${prod.name}`);
+
+                // Vamos usar as URLs originais diretamente para evitar travamentos de CORS/Upload
+                // O usuário pode subir fotos manuais depois se desejar
+                const finalImageUrl = prod.img;
 
                 // Save to Firestore
                 await addDoc(collection(db, 'equipments'), {
@@ -172,12 +171,14 @@ export function Seeder() {
                 });
 
                 count++;
+                console.log(`✨ Sucesso: ${prod.name}`);
                 setProgress(Math.round((count / products.length) * 100));
             }
+            console.log("🎉 Sincronização finalizada com sucesso!");
             setStatus('success');
             setTimeout(() => window.location.reload(), 2000);
         } catch (e) {
-            console.error(e);
+            console.error("❌ Erro CRÍTICO na sincronização:", e);
             setStatus('error');
         } finally {
             setLoading(false);
