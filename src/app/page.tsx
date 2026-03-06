@@ -46,6 +46,7 @@ export default function Home() {
       <section
         className="py-48 bg-slate-900 relative"
         style={{ paddingTop: '12rem', paddingBottom: '12rem' }}
+        suppressHydrationWarning
       >
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
         <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">

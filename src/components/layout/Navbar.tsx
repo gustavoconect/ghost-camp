@@ -53,6 +53,7 @@ export function Navbar() {
                     <nav
                         className="hidden md:flex items-center"
                         style={{ gap: '3.5rem' }}
+                        suppressHydrationWarning
                     >
                         <Link
                             href="/"
@@ -61,6 +62,7 @@ export function Navbar() {
                                 : 'text-slate-100 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
                             style={{ color: pathname === '/' ? '#fff' : '#f1f5f9', opacity: 1 }}
+                            suppressHydrationWarning
                         >
                             Início
                         </Link>
@@ -71,6 +73,7 @@ export function Navbar() {
                                 : 'text-slate-100 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
                             style={{ color: pathname === '/catalogo' ? '#fb923c' : '#f1f5f9', opacity: 1 }}
+                            suppressHydrationWarning
                         >
                             Equipamentos
                         </Link>

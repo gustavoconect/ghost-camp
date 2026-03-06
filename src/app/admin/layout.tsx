@@ -104,10 +104,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
             </aside>
 
-            {/* Main Content — empurrado pela sidebar no desktop com fallback de style */}
+            {/* Main Content — empurrado pela sidebar no desktop com fallback de style fixo para evitar mismatch */}
             <main
                 className="lg:ml-64 min-h-screen pt-20 lg:pt-8 px-4 sm:px-6 lg:px-10 pb-10"
-                style={{ marginLeft: 'var(--sidebar-width, 16rem)' }}
+                style={{ marginLeft: '16rem' }}
+                suppressHydrationWarning
             >
                 <div className="max-w-6xl mx-auto">
                     {children}
