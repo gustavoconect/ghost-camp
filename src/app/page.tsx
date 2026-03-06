@@ -42,8 +42,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bento Grid Features - Ultra Spaced */}
-      <section className="py-48 bg-slate-900 relative">
+      {/* Bento Grid Features - Ultra Spaced with Fallback */}
+      <section
+        className="py-48 bg-slate-900 relative"
+        style={{ paddingTop: '12rem', paddingBottom: '12rem' }}
+      >
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
         <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
 

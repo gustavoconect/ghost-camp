@@ -49,22 +49,22 @@ export function Navbar() {
                         </span>
                     </Link>
 
-                    {/* Nav Desktop - Spaced for Premium Look */}
-                    <nav className="hidden md:flex items-center gap-4">
+                    {/* Nav Desktop - Ultra Spaced for Premium Look */}
+                    <nav className="hidden md:flex items-center gap-12">
                         <Link
                             href="/"
-                            className={`px-5 py-2.5 rounded-xl font-bold transition-all text-sm tracking-wide ${pathname === '/'
-                                ? 'text-white bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]'
-                                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                            className={`px-6 py-3 rounded-2xl font-black transition-all text-sm tracking-widest uppercase ${pathname === '/'
+                                ? 'text-white bg-white/10 shadow-[0_0_30px_rgba(255,255,255,0.1)] border border-white/20'
+                                : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
                         >
                             Início
                         </Link>
                         <Link
                             href="/catalogo"
-                            className={`px-5 py-2.5 rounded-xl font-bold transition-all text-sm tracking-wide ${pathname === '/catalogo'
-                                ? 'text-orange-400 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.1)]'
-                                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                            className={`px-6 py-3 rounded-2xl font-black transition-all text-sm tracking-widest uppercase ${pathname === '/catalogo'
+                                ? 'text-orange-400 bg-orange-500/10 shadow-[0_0_30px_rgba(249,115,22,0.2)] border border-orange-500/30'
+                                : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
                         >
                             Equipamentos
