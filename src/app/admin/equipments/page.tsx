@@ -6,6 +6,7 @@ import { db } from '@/lib/firebase';
 import { Equipment } from '@/types';
 import { Loader2, Plus, Pencil, Trash2, Tent } from 'lucide-react';
 import Link from 'next/link';
+import { Seeder } from './Seeder';
 
 export default function AdminEquipmentsPage() {
     const [equipments, setEquipments] = useState<Equipment[]>([]);
@@ -143,6 +144,7 @@ export default function AdminEquipmentsPage() {
                     </div>
                 )}
             </div>
+            <Seeder />
         </div>
     );
 }

@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ghost-dark: #0f172a; /* Slate 900 */
-  --color-ghost-brand: #ea580c; /* Orange 600 */
+  --color-ghost-dark: #0f172a;
+  /* Slate 900 */
+  --color-ghost-brand: #ea580c;
+  /* Orange 600 */
 }
 
 html,
@@ -13,10 +15,20 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--color-ghost-dark);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-slate-900/60 backdrop-blur-md border border-white/5 shadow-2xl;
+  }
+
+  .glass-card {
+    @apply bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 shadow-xl transition-all duration-300;
+  }
 }
 
 * {

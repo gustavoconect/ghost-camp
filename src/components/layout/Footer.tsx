@@ -5,7 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { SiteSettings } from '@/types';
 import Link from 'next/link';
-import { Tent, Instagram, ArrowUpRight } from 'lucide-react';
+import { Instagram, ArrowUpRight, MapPin, Phone } from 'lucide-react';
 
 export function Footer() {
     const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -26,58 +26,83 @@ export function Footer() {
     }, []);
 
     return (
-        <footer className="bg-slate-900 border-t border-slate-800 pt-16 pb-8">
-            <div className="max-w-7xl mx-auto px-4 md:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-                    <div className="md:col-span-1">
-                        <Link href="/" className="flex items-center gap-2 mb-6">
-                            <Tent className="w-8 h-8 text-orange-500" />
-                            <span className="text-2xl font-black text-white tracking-widest uppercase">
+        <footer className="relative bg-slate-950 border-t border-slate-800/50">
+            {/* Gradient line */}
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-500/40 to-transparent"></div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                    {/* Brand */}
+                    <div className="md:col-span-2">
+                        <Link href="/" className="flex items-center gap-3 mb-6 group">
+                            <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10 shadow-[0_0_10px_rgba(234,88,12,0.3)]">
+                                <img
+                                    src="/ghost_camp_premium_logo.png"
+                                    alt="Ghost Camp Logo"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <span className="text-xl font-black text-white tracking-tight">
                                 Ghost<span className="text-orange-500">Camp</span>
                             </span>
                         </Link>
-                        <p className="text-slate-400 max-w-sm">
-                            Sua aventura começa com o equipamento certo. Aluguel simples, rápido e com a garantia de qualidade que você merece.
+                        <p className="text-slate-400 max-w-md font-light leading-relaxed mb-6">
+                            Sua aventura começa com o equipamento certo. Aluguel simples, rápido e com a garantia de qualidade que todo explorador merece.
                         </p>
+                        <div className="flex items-center gap-4 text-slate-500 text-sm">
+                            <div className="flex items-center gap-1.5">
+                                <MapPin className="w-4 h-4" />
+                                <span>São Paulo, SP</span>
+                            </div>
+                            {settings?.whatsapp_number && (
+                                <div className="flex items-center gap-1.5">
+                                    <Phone className="w-4 h-4" />
+                                    <span>WhatsApp</span>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
+                    {/* Quick Links */}
                     <div className="flex flex-col">
-                        <h4 className="text-white font-bold mb-6 uppercase tracking-wider">Acesso Rápido</h4>
-                        <nav className="flex flex-col gap-4">
-                            <Link href="/" className="text-slate-400 hover:text-orange-500 transition-colors w-fit">Home</Link>
-                            <Link href="/catalogo" className="text-slate-400 hover:text-orange-500 transition-colors w-fit">Catálogo de Equipamentos</Link>
-                            <Link href="/mochila" className="text-slate-400 hover:text-orange-500 transition-colors w-fit">Carrinho de Reserva</Link>
+                        <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-widest">Navegação</h4>
+                        <nav className="flex flex-col gap-3">
+                            <Link href="/" className="text-slate-400 hover:text-orange-400 transition-colors w-fit text-sm">Início</Link>
+                            <Link href="/catalogo" className="text-slate-400 hover:text-orange-400 transition-colors w-fit text-sm">Equipamentos</Link>
+                            <Link href="/mochila" className="text-slate-400 hover:text-orange-400 transition-colors w-fit text-sm">Minha Mochila</Link>
                         </nav>
                     </div>
 
+                    {/* Social */}
                     <div className="flex flex-col">
-                        <h4 className="text-white font-bold mb-6 uppercase tracking-wider">Redes Sociais</h4>
+                        <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-widest">Social</h4>
                         {settings?.instagram_url ? (
                             <a
                                 href={settings.instagram_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-orange-500/50 p-4 rounded-xl text-slate-300 hover:text-white transition-all w-fit group"
+                                className="glass-card flex items-center gap-3 p-4 rounded-xl text-slate-300 hover:text-white hover:border-orange-500/50 transition-all w-fit group cursor-pointer"
                             >
-                                <Instagram className="w-6 h-6 text-orange-500 group-hover:scale-110 transition-transform" />
+                                <Instagram className="w-5 h-5 text-orange-500 group-hover:scale-110 transition-transform" />
                                 <div>
-                                    <p className="text-sm font-bold">Siga no Instagram</p>
+                                    <p className="text-sm font-semibold">Instagram</p>
                                     <p className="text-xs text-slate-500">@ghosttripsoficial</p>
                                 </div>
-                                <ArrowUpRight className="w-4 h-4 ml-2 opacity-50 group-hover:opacity-100 transition-opacity" />
+                                <ArrowUpRight className="w-4 h-4 ml-2 opacity-40 group-hover:opacity-100 transition-opacity" />
                             </a>
                         ) : (
-                            <p className="text-slate-500 text-sm">Instagram não configurado</p>
+                            <p className="text-slate-600 text-sm">Instagram não configurado</p>
                         )}
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-                    <p className="text-slate-500 text-sm">
-                        © {new Date().getFullYear()} Ghost Camp. Todos os direitos reservados.
+                {/* Copyright */}
+                <div className="pt-8 border-t border-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-3">
+                    <p className="text-slate-500 text-xs">
+                        &copy; {new Date().getFullYear()} Ghost Camp. Todos os direitos reservados.
                     </p>
-                    <p className="text-slate-600 text-xs">
-                        Desenvolvido com dedicação às experiências outdoor.
+                    <p className="text-slate-700 text-xs">
+                        Equipamentos para quem vive a aventura.
                     </p>
                 </div>
             </div>

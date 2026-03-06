@@ -35,12 +35,16 @@ export function Navbar() {
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="bg-orange-600 p-2 rounded-lg group-hover:bg-orange-500 transition-colors">
-                            <Tent className="w-6 h-6 text-white" />
+                    {/* Logo Premium */}
+                    <Link href="/" className="flex items-center gap-3 group">
+                        <div className="relative w-12 h-12 overflow-hidden rounded-full shadow-[0_0_15px_rgba(234,88,12,0.4)] border border-white/10 group-hover:border-orange-500/50 transition-all duration-300 group-hover:scale-105">
+                            <img
+                                src="/ghost_camp_premium_logo.png"
+                                alt="Ghost Camp Logo"
+                                className="w-full h-full object-cover"
+                            />
                         </div>
-                        <span className="text-2xl font-black tracking-tight text-white drop-shadow-md">
+                        <span className="text-2xl font-black tracking-tight text-white drop-shadow-md hidden sm:block font-[system-ui]">
                             Ghost Camp
                         </span>
                     </Link>
@@ -64,7 +68,7 @@ export function Navbar() {
                                 </span>
                             )}
                         </Link>
-                        <Link href="/admin/login" className="text-sm text-slate-400 hover:text-white transition-colors">
+                        <Link href="/admin/login" className="text-sm font-medium text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/5">
                             Área do Lojista
                         </Link>
                     </div>
