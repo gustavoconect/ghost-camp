@@ -49,33 +49,38 @@ export function Navbar() {
                         </span>
                     </Link>
 
-                    {/* Nav Desktop - Ultra Spaced for Premium Look */}
-                    <nav className="hidden md:flex items-center gap-12">
+                    {/* Nav Desktop - Ultra Spaced for Premium Look with Style Fallback */}
+                    <nav
+                        className="hidden md:flex items-center"
+                        style={{ gap: '3.5rem' }}
+                    >
                         <Link
                             href="/"
                             className={`px-6 py-3 rounded-2xl font-black transition-all text-sm tracking-widest uppercase ${pathname === '/'
-                                ? 'text-white bg-white/10 shadow-[0_0_30px_rgba(255,255,255,0.1)] border border-white/20'
-                                : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
+                                ? 'text-white bg-white/10 shadow-[0_0_40px_rgba(255,255,255,0.1)] border border-white/20'
+                                : 'text-slate-100 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
+                            style={{ color: pathname === '/' ? '#fff' : '#f1f5f9', opacity: 1 }}
                         >
                             Início
                         </Link>
                         <Link
                             href="/catalogo"
                             className={`px-6 py-3 rounded-2xl font-black transition-all text-sm tracking-widest uppercase ${pathname === '/catalogo'
-                                ? 'text-orange-400 bg-orange-500/10 shadow-[0_0_30px_rgba(249,115,22,0.2)] border border-orange-500/30'
-                                : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
+                                ? 'text-orange-400 bg-orange-500/10 shadow-[0_0_40px_rgba(249,115,22,0.2)] border border-orange-500/30'
+                                : 'text-slate-100 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
+                            style={{ color: pathname === '/catalogo' ? '#fb923c' : '#f1f5f9', opacity: 1 }}
                         >
                             Equipamentos
                         </Link>
 
                         <div className="w-px h-5 bg-slate-700 mx-3"></div>
 
-                        <Link href="/mochila" className="relative p-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-all group">
-                            <ShoppingBag className="w-5 h-5" />
+                        <Link href="/mochila" className="relative p-3 text-white hover:bg-white/5 rounded-xl transition-all group">
+                            <ShoppingBag className="w-5 h-5 text-white" />
                             {mounted && totalItems > 0 && (
-                                <span className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-orange-600 text-white text-[10px] font-bold border-2 border-slate-900 shadow-sm">
+                                <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-600 text-white text-[10px] font-bold border-2 border-slate-900 shadow-sm">
                                     {totalItems}
                                 </span>
                             )}
@@ -83,7 +88,8 @@ export function Navbar() {
 
                         <Link
                             href="/admin/login"
-                            className="ml-2 text-xs font-medium text-slate-400 hover:text-white transition-all bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/10 hover:border-white/20"
+                            className="ml-2 text-xs font-bold text-white hover:text-white transition-all bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-full border border-white/20 hover:border-white/40 uppercase tracking-widest"
+                            style={{ color: '#fff' }}
                         >
                             Área do Lojista
                         </Link>
@@ -91,7 +97,7 @@ export function Navbar() {
 
                     {/* Mobile */}
                     <div className="md:hidden flex items-center gap-2">
-                        <Link href="/mochila" className="relative p-2 text-slate-300 hover:text-white transition-colors">
+                        <Link href="/mochila" className="relative p-2 text-white hover:text-white transition-colors">
                             <ShoppingBag className="w-6 h-6" />
                             {mounted && totalItems > 0 && (
                                 <span className="absolute -top-0 -right-0 flex h-5 w-5 items-center justify-center rounded-full bg-orange-600 text-white text-[10px] font-bold border-2 border-slate-900 shadow-sm">
@@ -101,7 +107,7 @@ export function Navbar() {
                         </Link>
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="p-2 text-slate-300 hover:text-white cursor-pointer"
+                            className="p-2 text-white hover:text-white cursor-pointer"
                         >
                             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>

@@ -55,7 +55,10 @@ export default function Home() {
             <p className="text-slate-400 text-lg leading-relaxed">Trabalhamos com marcas de ponta para garantir que seu único foco seja a jornada.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            className="grid grid-cols-1 md:grid-cols-3"
+            style={{ gap: '3.5rem' }}
+          >
             {/* Feature 1 */}
             <div className="glass-card p-10 rounded-3xl group hover:-translate-y-1">
               <div className="w-16 h-16 bg-orange-500/10 border border-orange-500/20 text-orange-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
