@@ -29,8 +29,8 @@ export function Navbar() {
     return (
         <header
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-                    ? 'bg-slate-900/95 backdrop-blur-md shadow-xl border-b border-white/5 py-3'
-                    : 'bg-slate-900/70 backdrop-blur-sm py-4'
+                ? 'bg-slate-900/95 backdrop-blur-md shadow-xl border-b border-white/5 py-3'
+                : 'bg-slate-900/70 backdrop-blur-sm py-4'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,22 +49,22 @@ export function Navbar() {
                         </span>
                     </Link>
 
-                    {/* Nav Desktop */}
-                    <nav className="hidden md:flex items-center gap-1">
+                    {/* Nav Desktop - Spaced for Premium Look */}
+                    <nav className="hidden md:flex items-center gap-4">
                         <Link
                             href="/"
-                            className={`px-4 py-2 rounded-lg font-medium transition-all text-sm ${pathname === '/'
-                                    ? 'text-white bg-white/10'
-                                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                            className={`px-5 py-2.5 rounded-xl font-bold transition-all text-sm tracking-wide ${pathname === '/'
+                                ? 'text-white bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]'
+                                : 'text-slate-400 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             Início
                         </Link>
                         <Link
                             href="/catalogo"
-                            className={`px-4 py-2 rounded-lg font-medium transition-all text-sm ${pathname === '/catalogo'
-                                    ? 'text-orange-400 bg-orange-500/10'
-                                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                            className={`px-5 py-2.5 rounded-xl font-bold transition-all text-sm tracking-wide ${pathname === '/catalogo'
+                                ? 'text-orange-400 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.1)]'
+                                : 'text-slate-400 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             Equipamentos
