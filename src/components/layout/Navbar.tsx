@@ -1,8 +1,8 @@
 'use client';
 
-import { Suspense, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Tent, Menu, X, ShoppingBag } from 'lucide-react';
+import { Menu, X, ShoppingBag } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
 
@@ -10,11 +10,9 @@ export function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const pathname = usePathname();
-    // Hydration sync check: delay store usage until mounted 
     const [mounted, setMounted] = useState(false);
     const totalItems = useCartStore((state) => state.getTotalItems());
 
-    // Esconder a navbar na rota de admin logado (deixar o layout do admin assumir)
     const isAdminRoute = pathname.startsWith('/admin') && pathname !== '/admin/login';
 
     useEffect(() => {
@@ -30,52 +28,70 @@ export function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-slate-900/95 backdrop-blur-md shadow-lg py-3' : 'bg-transparent py-5'
+            className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
+                    ? 'bg-slate-900/95 backdrop-blur-md shadow-xl border-b border-white/5 py-3'
+                    : 'bg-slate-900/70 backdrop-blur-sm py-4'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center">
-                    {/* Logo Premium */}
+                    {/* Logo */}
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="relative w-12 h-12 overflow-hidden rounded-full shadow-[0_0_15px_rgba(234,88,12,0.4)] border border-white/10 group-hover:border-orange-500/50 transition-all duration-300 group-hover:scale-105">
+                        <div className="relative w-10 h-10 overflow-hidden rounded-full shadow-[0_0_12px_rgba(234,88,12,0.35)] border border-white/10 group-hover:border-orange-500/50 transition-all duration-300 group-hover:scale-105">
                             <img
                                 src="/ghost_camp_premium_logo.png"
                                 alt="Ghost Camp Logo"
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        <span className="text-2xl font-black tracking-tight text-white drop-shadow-md hidden sm:block font-[system-ui]">
+                        <span className="text-xl font-black tracking-tight text-white drop-shadow-md hidden sm:block">
                             Ghost Camp
                         </span>
                     </Link>
 
-                    {/* Nav Desktop Principal */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        <Link href="/" className="text-slate-200 hover:text-orange-500 font-medium transition-colors">
+                    {/* Nav Desktop */}
+                    <nav className="hidden md:flex items-center gap-1">
+                        <Link
+                            href="/"
+                            className={`px-4 py-2 rounded-lg font-medium transition-all text-sm ${pathname === '/'
+                                    ? 'text-white bg-white/10'
+                                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                                }`}
+                        >
                             Início
                         </Link>
-                        <Link href="/catalogo" className="text-slate-200 hover:text-orange-500 font-medium transition-colors">
+                        <Link
+                            href="/catalogo"
+                            className={`px-4 py-2 rounded-lg font-medium transition-all text-sm ${pathname === '/catalogo'
+                                    ? 'text-orange-400 bg-orange-500/10'
+                                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                                }`}
+                        >
                             Equipamentos
                         </Link>
 
-                        <div className="h-6 border-l border-slate-700 mx-2"></div>
+                        <div className="w-px h-5 bg-slate-700 mx-3"></div>
 
-                        <Link href="/mochila" className="relative p-2 text-slate-200 hover:text-orange-500 transition-colors flex items-center gap-2 group">
+                        <Link href="/mochila" className="relative p-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-all group">
                             <ShoppingBag className="w-5 h-5" />
                             {mounted && totalItems > 0 && (
-                                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange-600 text-white text-[10px] font-bold border-2 border-slate-900 shadow-sm animate-in fade-in zoom-in group-hover:scale-110 transition-transform">
+                                <span className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-orange-600 text-white text-[10px] font-bold border-2 border-slate-900 shadow-sm">
                                     {totalItems}
                                 </span>
                             )}
                         </Link>
-                        <Link href="/admin/login" className="text-sm font-medium text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/5">
+
+                        <Link
+                            href="/admin/login"
+                            className="ml-2 text-xs font-medium text-slate-400 hover:text-white transition-all bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/10 hover:border-white/20"
+                        >
                             Área do Lojista
                         </Link>
-                    </div>
+                    </nav>
 
-                    {/* Mobile Menu Botão */}
-                    <div className="md:hidden flex items-center gap-4">
-                        <Link href="/mochila" className="relative p-2 text-slate-200 hover:text-orange-500 transition-colors group">
+                    {/* Mobile */}
+                    <div className="md:hidden flex items-center gap-2">
+                        <Link href="/mochila" className="relative p-2 text-slate-300 hover:text-white transition-colors">
                             <ShoppingBag className="w-6 h-6" />
                             {mounted && totalItems > 0 && (
                                 <span className="absolute -top-0 -right-0 flex h-5 w-5 items-center justify-center rounded-full bg-orange-600 text-white text-[10px] font-bold border-2 border-slate-900 shadow-sm">
@@ -85,27 +101,27 @@ export function Navbar() {
                         </Link>
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="text-slate-200 hover:text-white"
+                            className="p-2 text-slate-300 hover:text-white cursor-pointer"
                         >
-                            {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+                            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* Menu Mobile Render */}
+            {/* Mobile Menu */}
             {mobileMenuOpen && (
-                <div className="md:hidden absolute top-full left-0 w-full bg-slate-900 border-t border-slate-800 shadow-xl py-4 flex flex-col px-4 gap-4 pb-8">
+                <div className="md:hidden absolute top-full left-0 w-full bg-slate-900/98 backdrop-blur-lg border-t border-white/5 shadow-2xl py-4 flex flex-col px-5 gap-1 pb-6">
                     <Link
                         href="/"
-                        className="text-lg font-medium text-slate-200 p-2 hover:bg-slate-800 rounded-lg"
+                        className="text-base font-medium text-slate-200 p-3 hover:bg-white/5 rounded-xl transition-colors"
                         onClick={() => setMobileMenuOpen(false)}
                     >
                         Início
                     </Link>
                     <Link
                         href="/catalogo"
-                        className="text-lg font-medium text-orange-500 p-2 hover:bg-slate-800 rounded-lg"
+                        className="text-base font-medium text-orange-400 p-3 hover:bg-white/5 rounded-xl transition-colors"
                         onClick={() => setMobileMenuOpen(false)}
                     >
                         Equipamentos
@@ -113,7 +129,7 @@ export function Navbar() {
                     <hr className="border-slate-800 my-2" />
                     <Link
                         href="/admin/login"
-                        className="text-sm font-medium text-slate-400 p-2"
+                        className="text-sm font-medium text-slate-500 p-3 hover:bg-white/5 rounded-xl transition-colors"
                         onClick={() => setMobileMenuOpen(false)}
                     >
                         Área do Lojista

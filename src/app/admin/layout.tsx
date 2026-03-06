@@ -35,27 +35,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     ];
 
     return (
-        <div className="min-h-screen bg-slate-900 flex text-slate-200">
-            {/* Menu Mobile */}
+        <div className="min-h-screen bg-slate-900 text-slate-200">
+            {/* Mobile Top Bar */}
             <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-4 z-50">
                 <span className="text-xl font-black text-white">Ghost<span className="text-orange-500">Camp</span> Admin</span>
-                <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-slate-400 hover:text-white">
+                <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-slate-400 hover:text-white cursor-pointer">
                     {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
             </div>
 
-            {/* Sidebar Desktop e Mobile Wrapper */}
-            <div className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-slate-800 border-r border-slate-700 transform transition-transform duration-300 ease-in-out
-        ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
-                <div className="flex flex-col h-full h-[100dvh]">
-                    <div className="h-16 flex items-center justify-center border-b border-slate-700 hidden lg:flex">
+            {/* Backdrop overlay mobile */}
+            {mobileOpen && (
+                <div
+                    className="lg:hidden fixed inset-0 bg-black/60 z-30"
+                    onClick={() => setMobileOpen(false)}
+                />
+            )}
+
+            {/* Sidebar */}
+            <aside className={`
+                fixed inset-y-0 left-0 z-40 w-64 bg-slate-800 border-r border-slate-700 
+                transform transition-transform duration-300 ease-in-out
+                ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            `}>
+                <div className="flex flex-col h-full">
+                    {/* Logo Desktop */}
+                    <div className="h-16 items-center justify-center border-b border-slate-700 hidden lg:flex">
                         <span className="text-2xl font-black text-white tracking-widest uppercase">
                             Ghost<span className="text-orange-500">Camp</span>
                         </span>
                     </div>
 
+                    {/* Nav Links */}
                     <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto mt-16 lg:mt-0">
                         {menuItems.map((item) => {
                             const active = pathname.startsWith(item.href);
@@ -66,12 +77,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     href={item.href}
                                     onClick={() => setMobileOpen(false)}
                                     className={`
-                    flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-                    ${active
+                                        flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer
+                                        ${active
                                             ? 'bg-orange-600 border border-orange-500 text-white font-bold shadow-lg shadow-orange-900/20'
                                             : 'text-slate-400 hover:bg-slate-700/50 hover:text-white'
                                         }
-                  `}
+                                    `}
                                 >
                                     <Icon className={`w-5 h-5 ${active ? 'text-white' : 'text-slate-500'}`} />
                                     {item.label}
@@ -80,25 +91,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         })}
                     </nav>
 
+                    {/* Logout */}
                     <div className="p-4 border-t border-slate-700">
                         <button
                             onClick={handleLogout}
-                            className="flex w-full items-center gap-3 px-4 py-3 text-slate-400 hover:text-red-400 hover:bg-slate-700/50 rounded-xl transition-all"
+                            className="flex w-full items-center gap-3 px-4 py-3 text-slate-400 hover:text-red-400 hover:bg-slate-700/50 rounded-xl transition-all cursor-pointer"
                         >
                             <LogOut className="w-5 h-5" />
                             Sair do Sistema
                         </button>
                     </div>
                 </div>
-            </div>
+            </aside>
 
-            {/* Main Content Area */}
-            <div className="flex-1 lg:ml-64 flex flex-col min-h-screen">
-                <main className="flex-1 p-6 lg:p-10 pt-24 lg:pt-10 max-w-7xl mx-auto w-full">
+            {/* Main Content — empurrado pela sidebar no desktop */}
+            <main className="lg:ml-64 min-h-screen pt-20 lg:pt-8 px-4 sm:px-6 lg:px-10 pb-10">
+                <div className="max-w-6xl mx-auto">
                     {children}
-                </main>
-            </div>
-
+                </div>
+            </main>
         </div>
     );
 }

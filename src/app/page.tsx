@@ -43,41 +43,41 @@ export default function Home() {
       </section>
 
       {/* Bento Grid Features */}
-      <section className="py-24 bg-slate-900 relative">
+      <section className="py-32 bg-slate-900 relative">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
 
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Projetado para Exploradores</h2>
-            <p className="text-slate-400">Trabalhamos com marcas de ponta para garantir que seu único foco seja a jornada.</p>
+          <div className="text-center max-w-2xl mx-auto mb-20">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-5">Projetado para Exploradores</h2>
+            <p className="text-slate-400 text-lg leading-relaxed">Trabalhamos com marcas de ponta para garantir que seu único foco seja a jornada.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="glass-card p-8 rounded-3xl group hover:-translate-y-1">
-              <div className="w-14 h-14 bg-orange-500/10 border border-orange-500/20 text-orange-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Tent className="w-7 h-7" />
+            <div className="glass-card p-10 rounded-3xl group hover:-translate-y-1">
+              <div className="w-16 h-16 bg-orange-500/10 border border-orange-500/20 text-orange-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                <Tent className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-white">Camping Premium</h3>
-              <p className="text-slate-400 leading-relaxed font-light">Barracas resistentes e acessórios modulares para quem não abre mão do conforto e segurança no topo da montanha.</p>
+              <h3 className="text-2xl font-bold mb-4 text-white">Camping Premium</h3>
+              <p className="text-slate-400 leading-relaxed font-light text-base">Barracas resistentes e acessórios modulares para quem não abre mão do conforto e segurança no topo da montanha.</p>
             </div>
 
             {/* Feature 2 */}
-            <div className="glass-card p-8 rounded-3xl group hover:-translate-y-1 md:translate-y-4">
-              <div className="w-14 h-14 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <MountainSnow className="w-7 h-7" />
+            <div className="glass-card p-10 rounded-3xl group hover:-translate-y-1">
+              <div className="w-16 h-16 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                <MountainSnow className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-white">Trilhas Extrema</h3>
-              <p className="text-slate-400 leading-relaxed font-light">Mochilas cargueiras anatômicas, isolantes térmicos e itens essenciais para jornadas longas e travessias duras.</p>
+              <h3 className="text-2xl font-bold mb-4 text-white">Trilhas Extrema</h3>
+              <p className="text-slate-400 leading-relaxed font-light text-base">Mochilas cargueiras anatômicas, isolantes térmicos e itens essenciais para jornadas longas e travessias duras.</p>
             </div>
 
             {/* Feature 3 */}
-            <div className="glass-card p-8 rounded-3xl group hover:-translate-y-1">
-              <div className="w-14 h-14 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Compass className="w-7 h-7" />
+            <div className="glass-card p-10 rounded-3xl group hover:-translate-y-1">
+              <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                <Compass className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-white">Rapel e Escalada</h3>
-              <p className="text-slate-400 leading-relaxed font-light">Equipamentos rigorosamente inspecionados. Sua vida e segurança são nossa prioridade máxima nas paredes.</p>
+              <h3 className="text-2xl font-bold mb-4 text-white">Rapel e Escalada</h3>
+              <p className="text-slate-400 leading-relaxed font-light text-base">Equipamentos rigorosamente inspecionados. Sua vida e segurança são nossa prioridade máxima nas paredes.</p>
             </div>
           </div>
         </div>
