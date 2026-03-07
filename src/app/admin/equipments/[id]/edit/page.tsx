@@ -1,16 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2, ArrowLeft, CheckCircle, Link as LinkIcon, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-export default function NewEquipmentPage() {
+export default function EditEquipmentPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    const resolvedParams = use(params);
+    const equipmentId = resolvedParams.id;
+
+    const [loadingData, setLoadingData] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
 
     const [name, setName] = useState('');
@@ -18,8 +22,42 @@ export default function NewEquipmentPage() {
     const [price, setPrice] = useState('');
     const [isActive, setIsActive] = useState(true);
 
-    // Instead of files, we just take simple URLs
     const [imageUrls, setImageUrls] = useState<string[]>(['']);
+
+    useEffect(() => {
+        const fetchEquipment = async () => {
+            try {
+                const docRef = doc(db, 'equipments', equipmentId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    setName(data.name || '');
+                    setDescription(data.description || '');
+                    setPrice(data.price_per_day?.toString() || '');
+                    setIsActive(data.is_active !== false); // default to true if undefined
+
+                    if (data.image_urls && Array.isArray(data.image_urls) && data.image_urls.length > 0) {
+                        setImageUrls(data.image_urls);
+                    } else {
+                        setImageUrls(['']); // Ensure at least one empty field if no URLs exist
+                    }
+                } else {
+                    toast.error('Equipamento não encontrado.');
+                    router.push('/admin/equipments');
+                }
+            } catch (error) {
+                console.error("Erro ao buscar equipamento:", error);
+                toast.error('Erro ao buscar dados do equipamento.');
+            } finally {
+                setLoadingData(false);
+            }
+        };
+
+        if (equipmentId) {
+            fetchEquipment();
+        }
+    }, [equipmentId, router]);
 
     const handleUrlChange = (index: number, value: string) => {
         const newUrls = [...imageUrls];
@@ -45,29 +83,41 @@ export default function NewEquipmentPage() {
         // Clean empty URLs
         const validUrls = imageUrls.filter(url => url.trim() !== '');
 
-        if (!name || !price || validUrls.length === 0) {
-            toast.error('Preencha os campos obrigatórios e adicione pelo menos 1 URL de foto.');
+        if (!name.trim()) {
+            toast.error('O nome do equipamento é obrigatório.');
             return;
         }
 
-        setLoading(true);
+        const parsedPrice = parseFloat(price.replace(',', '.'));
+        if (isNaN(parsedPrice) || parsedPrice <= 0) {
+            toast.error('Informe um valor de diária válido.');
+            return;
+        }
+
+        if (validUrls.length === 0) {
+            toast.error('Por favor, adicione pelo menos uma URL de imagem.');
+            return;
+        }
+
+        setSaving(true);
 
         try {
+            const docRef = doc(db, 'equipments', equipmentId);
+
             const docData = {
-                name,
-                description,
-                price_per_day: parseFloat(price),
-                image_urls: validUrls, // Save raw URLs
+                name: name.trim(),
+                description: description.trim(),
+                price_per_day: parsedPrice,
+                image_urls: validUrls,
                 is_active: isActive,
-                category_id: 'geral',
-                created_at: serverTimestamp()
+                updated_at: serverTimestamp()
             };
 
-            await addDoc(collection(db, 'equipments'), docData);
+            await updateDoc(docRef, docData);
 
             setSuccess(true);
-            setLoading(false);
-            toast.success('Equipamento criado com sucesso!');
+            setSaving(false);
+            toast.success('Equipamento atualizado com sucesso!');
 
             setTimeout(() => {
                 router.push('/admin/equipments');
@@ -77,16 +127,24 @@ export default function NewEquipmentPage() {
         } catch (error) {
             console.error("Erro geral no submit:", error);
             toast.error('Ocorreu um erro ao salvar o equipamento. Verifique sua conexão.');
-            setLoading(false);
+            setSaving(false);
         }
     };
+
+    if (loadingData) {
+        return (
+            <div className="admin-page flex items-center justify-center min-h-[60vh]">
+                <Loader2 size={48} className="animate-spin text-blue-500" />
+            </div>
+        );
+    }
 
     if (success) {
         return (
             <div className="admin-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
                 <CheckCircle size={64} color="#22c55e" style={{ marginBottom: '24px' }} />
                 <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff', marginBottom: '12px' }}>Sucesso!</h1>
-                <p style={{ color: '#94a3b8', fontSize: '1.1rem' }}>Equipamento cadastrado com êxito. Redirecionando...</p>
+                <p style={{ color: '#94a3b8', fontSize: '1.1rem' }}>Equipamento atualizado com êxito. Redirecionando...</p>
             </div>
         );
     }
@@ -318,7 +376,7 @@ export default function NewEquipmentPage() {
                 <Link href="/admin/equipments" className="back-btn" title="Voltar">
                     <ArrowLeft size={24} />
                 </Link>
-                <h1 className="admin-title">Adicionar Equipamento</h1>
+                <h1 className="admin-title">Editar Equipamento</h1>
             </div>
 
             <div className="admin-panel">
@@ -331,7 +389,7 @@ export default function NewEquipmentPage() {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            disabled={loading}
+                            disabled={saving}
                             className="form-control"
                             placeholder="Ex: Barraca The North Face Alpine"
                             required
@@ -351,7 +409,7 @@ export default function NewEquipmentPage() {
                                         min="1"
                                         value={price}
                                         onChange={(e) => setPrice(e.target.value)}
-                                        disabled={loading}
+                                        disabled={saving}
                                         className="form-control"
                                         placeholder="45.00"
                                         required
@@ -367,7 +425,7 @@ export default function NewEquipmentPage() {
                                         type="checkbox"
                                         checked={isActive}
                                         onChange={(e) => setIsActive(e.target.checked)}
-                                        disabled={loading}
+                                        disabled={saving}
                                         className="toggle-checkbox"
                                     />
                                     <span className="toggle-text">Equipamento Ativo</span>
@@ -382,7 +440,7 @@ export default function NewEquipmentPage() {
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            disabled={loading}
+                            disabled={saving}
                             className="form-control"
                             placeholder="Detalhes técnicos, capacidade, peso, itens inclusos..."
                         />
@@ -404,7 +462,7 @@ export default function NewEquipmentPage() {
                                             type="url"
                                             value={url}
                                             onChange={(e) => handleUrlChange(index, e.target.value)}
-                                            disabled={loading}
+                                            disabled={saving}
                                             className="form-control"
                                             placeholder="https://exemplo.com/imagem.png"
                                             required={index === 0} // Only first is strictly required by HTML spec if others are empty
@@ -414,7 +472,7 @@ export default function NewEquipmentPage() {
                                         type="button"
                                         onClick={() => removeUrlField(index)}
                                         className="remove-url-btn"
-                                        disabled={loading}
+                                        disabled={saving}
                                         title="Remover Link"
                                     >
                                         <X size={20} />
@@ -426,7 +484,7 @@ export default function NewEquipmentPage() {
                                 type="button"
                                 onClick={addUrlField}
                                 className="add-url-btn"
-                                disabled={loading}
+                                disabled={saving}
                             >
                                 <Plus size={18} /> Adicionar outro link
                             </button>
@@ -435,16 +493,16 @@ export default function NewEquipmentPage() {
 
                     <button
                         type="submit"
-                        disabled={loading}
+                        disabled={saving}
                         className="submit-btn"
                     >
-                        {loading ? (
+                        {saving ? (
                             <>
                                 <Loader2 size={24} className="animate-spin" />
-                                Registrando no catálogo...
+                                Salvando alterações...
                             </>
                         ) : (
-                            'Publicar Equipamento'
+                            'Salvar Alterações'
                         )}
                     </button>
 

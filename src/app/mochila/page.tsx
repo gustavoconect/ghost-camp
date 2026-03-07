@@ -86,25 +86,74 @@ export default function MochilaCheckout() {
     };
 
     return (
-        <main className="min-h-screen pt-28 sm:pt-32 bg-black px-5 sm:px-6 lg:px-8 pb-20 sm:pb-28">
-            <div className="max-w-5xl mx-auto">
+        <main className="min-h-screen bg-black px-5 sm:px-6 lg:px-8 pb-20 sm:pb-28">
+            {/* Espaçador OBRIGATÓRIO (100px) para compensar a Navbar fixa em todas as telas */}
+            <div style={{ height: '100px', flexShrink: 0 }} aria-hidden="true" />
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .mochila-container {
+                    width: 100%;
+                    max-width: 1450px; /* Aumentado drasticamente o limite Desktop */
+                    margin: 0 auto;
+                }
+                .mochila-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 32px;
+                }
+                @media (min-width: 1024px) {
+                    .mochila-grid {
+                        /* Coluna da esquerda pega o espaço que sobrar, resumo amarrado em 450px (bem largo) */
+                        grid-template-columns: 1fr 450px; 
+                        gap: 48px;
+                    }
+                }
+                .produto-card {
+                    display: flex;
+                    gap: 24px;
+                    padding: 24px;
+                    border: 1px solid #27272a;
+                    background-color: #09090b;
+                    border-radius: 16px;
+                }
+                .produto-img-wrapper {
+                    position: relative;
+                    width: 120px;
+                    height: 120px;
+                    flex-shrink: 0;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    border: 1px solid rgba(39, 39, 42, 0.5);
+                    background-color: #18181b;
+                }
+                /* Em monitores maiores o item cresce mais */
+                @media (min-width: 640px) {
+                    .produto-img-wrapper { width: 160px; height: 160px; }
+                }
+                @media (min-width: 1024px) {
+                    .produto-img-wrapper { width: 180px; height: 180px; }
+                    .produto-card { padding: 32px; gap: 32px; }
+                }
+            `}} />
+
+            <div className="mochila-container">
 
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-10 sm:mb-12">
                     <Link
                         href="/catalogo"
-                        className="glass p-3 rounded-xl hover:bg-white/10 transition-colors cursor-pointer magnetic-btn shrink-0"
+                        className="p-3 rounded-xl hover:bg-white/10 transition-colors cursor-pointer shrink-0 border border-zinc-800"
                         aria-label="Voltar ao catálogo"
                     >
-                        <ArrowLeft className="w-5 h-5 text-slate-300" />
+                        <ArrowLeft className="w-5 h-5 text-zinc-300" />
                     </Link>
                     <div>
-                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white flex items-center gap-3">
-                            <ShoppingBag className="w-7 h-7 sm:w-8 sm:h-8 text-blue-500 shrink-0" />
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white flex items-center gap-4 tracking-tight">
+                            <ShoppingBag className="w-8 h-8 sm:w-10 sm:h-10 text-white shrink-0" />
                             Sua Mochila
                         </h1>
                         {items.length > 0 && (
-                            <p className="text-slate-400 text-sm mt-1.5">
+                            <p className="text-zinc-400 text-base mt-2">
                                 {items.length} {items.length === 1 ? 'item' : 'itens'} selecionados
                             </p>
                         )}
@@ -113,91 +162,87 @@ export default function MochilaCheckout() {
 
                 {items.length === 0 ? (
                     /* ── Empty State ──────────────── */
-                    <div
-                        className="text-center py-20 sm:py-28 glass-card max-w-lg mx-auto"
-                        style={{ borderRadius: 'var(--radius-card)' }}
-                    >
-                        <div className="w-20 h-20 glass rounded-full mx-auto mb-7 flex items-center justify-center">
-                            <ShoppingBag className="w-10 h-10 text-slate-500" />
+                    <div className="text-center py-24 sm:py-32 border border-zinc-800 bg-zinc-950/50 rounded-2xl max-w-3xl mx-auto mt-10">
+                        <div className="w-24 h-24 bg-zinc-900 rounded-full mx-auto mb-7 flex items-center justify-center border border-zinc-800">
+                            <ShoppingBag className="w-10 h-10 text-zinc-500" />
                         </div>
-                        <h3 className="text-xl sm:text-2xl text-white font-bold mb-4">
+                        <h3 className="text-2xl sm:text-3xl lg:text-4xl text-white font-black mb-5 tracking-tight">
                             Sua mochila está vazia
                         </h3>
-                        <p className="text-slate-400 mb-10 max-w-md mx-auto font-light leading-relaxed px-6">
-                            Volte ao catálogo e escolha os equipamentos ideais para sua próxima aventura.
+                        <p className="text-zinc-400 mb-10 max-w-xl mx-auto leading-relaxed px-6 text-lg">
+                            Dê espaço para o equipamento certo e garanta segurança na sua próxima aventura.
                         </p>
                         <Link
                             href="/catalogo"
-                            className="magnetic-btn slide-bg inline-flex items-center justify-center gap-3 bg-blue-600 text-white font-bold leading-normal rounded-xl hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] cursor-pointer shrink-0 whitespace-nowrap"
-                            style={{ padding: '12px 24px' }}
+                            className="inline-flex items-center justify-center bg-white text-black hover:bg-zinc-200 font-bold transition-colors cursor-pointer shrink-0 rounded-xl"
+                            style={{ padding: '16px 40px', fontSize: '1.1rem' }}
                         >
-                            Explorar Catálogo
+                            Explorar Equipamentos
                         </Link>
                     </div>
                 ) : (
                     /* ── Cart + Summary ──────────── */
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+                    <div className="mochila-grid">
 
                         {/* Items List */}
-                        <div className="lg:col-span-2 space-y-4">
+                        <div className="flex flex-col gap-6">
                             {items.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="glass-card rounded-2xl p-4 sm:p-5 flex gap-4 sm:gap-5"
-                                >
+                                <div key={item.id} className="produto-card">
                                     {/* Image */}
-                                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-black rounded-xl overflow-hidden shrink-0">
+                                    <div className="produto-img-wrapper">
                                         <Image
                                             src={item.image_urls?.[0] || 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=2000&auto=format&fit=crop'}
                                             alt={item.name}
                                             fill
                                             className="object-cover"
-                                            sizes="(max-width: 640px) 80px, 96px"
+                                            sizes="(max-width: 640px) 120px, (max-width: 1024px) 160px, 180px"
                                         />
                                     </div>
 
                                     {/* Details */}
-                                    <div className="flex-1 flex flex-col justify-between min-w-0">
-                                        <div className="flex justify-between items-start gap-3">
-                                            <h4 className="text-base sm:text-lg font-bold text-white line-clamp-2 leading-tight">
+                                    <div className="flex-1 flex flex-col justify-between py-1 min-w-0">
+                                        <div className="flex justify-between items-start gap-4">
+                                            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold text-white leading-tight">
                                                 {item.name}
                                             </h4>
                                             <button
                                                 onClick={() => removeItem(item.id)}
-                                                className="text-slate-600 hover:text-red-400 transition-colors p-2 shrink-0 cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
+                                                className="text-zinc-500 hover:text-red-500 transition-colors shrink-0 p-2 -mr-2"
                                                 aria-label={`Remover ${item.name}`}
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                <Trash2 className="w-6 h-6" />
                                             </button>
                                         </div>
 
-                                        <div className="flex justify-between items-center mt-4">
+                                        <div className="flex justify-between items-end mt-6">
                                             {/* Quantity Controls */}
-                                            <div className="flex items-center glass rounded-xl overflow-hidden">
+                                            <div className="flex items-center border border-zinc-800 bg-zinc-900/80 rounded-lg h-12">
                                                 <button
                                                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                    className="p-3 text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center"
+                                                    className="w-12 h-full flex items-center justify-center text-zinc-400 hover:text-white transition-colors cursor-pointer"
                                                     aria-label="Diminuir quantidade"
                                                 >
-                                                    <Minus className="w-4 h-4" />
+                                                    <Minus className="w-5 h-5" />
                                                 </button>
-                                                <span className="w-10 text-center text-white font-semibold text-sm">
+                                                <span className="w-10 text-center text-white font-bold text-base">
                                                     {item.quantity}
                                                 </span>
                                                 <button
                                                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                    className="p-3 text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center"
+                                                    className="w-12 h-full flex items-center justify-center text-zinc-400 hover:text-white transition-colors cursor-pointer"
                                                     aria-label="Aumentar quantidade"
                                                 >
-                                                    <Plus className="w-4 h-4" />
+                                                    <Plus className="w-5 h-5" />
                                                 </button>
                                             </div>
 
                                             {/* Price */}
-                                            <p className="text-blue-400 font-bold text-sm sm:text-base">
-                                                R$ {item.price_per_day.toFixed(2)}{' '}
-                                                <span className="text-xs text-slate-500">/dia</span>
-                                            </p>
+                                            <div className="text-right">
+                                                <p className="text-zinc-400 text-sm mb-1 uppercase tracking-wide font-medium">Valor diário</p>
+                                                <p className="text-white font-black text-xl lg:text-2xl">
+                                                    R$ {item.price_per_day.toFixed(2)}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -205,16 +250,16 @@ export default function MochilaCheckout() {
                         </div>
 
                         {/* Summary Panel */}
-                        <div className="glass-card rounded-2xl p-6 sm:p-7 h-fit lg:sticky lg:top-28">
-                            <h3 className="text-lg font-bold text-white mb-6 pb-5 border-b border-white/5">
+                        <div className="border border-zinc-800 bg-zinc-950/80 rounded-2xl p-6 sm:p-8 lg:p-10 shrink-0 flex flex-col h-max lg:sticky lg:top-32">
+                            <h3 className="text-2xl font-black text-white mb-8 border-b border-zinc-800 pb-6">
                                 Resumo da Reserva
                             </h3>
 
-                            <div className="space-y-6 mb-8">
+                            <div className="space-y-8 mb-10 flex-1">
                                 {/* Rental Days Input */}
                                 <div>
-                                    <label className="text-sm font-medium text-slate-400 mb-2.5 flex items-center gap-2">
-                                        <CalendarIcon className="w-4 h-4 text-blue-500" />
+                                    <label className="text-sm font-bold uppercase tracking-wider text-zinc-400 mb-3 flex items-center gap-2">
+                                        <CalendarIcon className="w-5 h-5 text-zinc-500" />
                                         Dias de Aventura
                                     </label>
                                     <input
@@ -222,14 +267,14 @@ export default function MochilaCheckout() {
                                         min="1"
                                         value={rentalDays}
                                         onChange={(e) => setRentalDays(parseInt(e.target.value) || 1)}
-                                        className="w-full bg-black/80 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 transition-colors text-base"
+                                        className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-5 py-4 text-lg focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-colors"
                                         placeholder="Quantos dias?"
                                     />
                                 </div>
 
                                 {/* Client Info Form */}
-                                <div className="space-y-4 pt-4 border-t border-white/5">
-                                    <h4 className="text-sm font-bold text-white uppercase tracking-wider">Seus Dados</h4>
+                                <div className="space-y-5 pt-8 border-t border-zinc-800">
+                                    <h4 className="text-sm font-bold uppercase tracking-wider text-zinc-400 mb-2">Seus Dados</h4>
                                     <div>
                                         <input
                                             type="text"
@@ -237,7 +282,7 @@ export default function MochilaCheckout() {
                                             value={customerName}
                                             onChange={(e) => setCustomerName(e.target.value)}
                                             required
-                                            className="w-full bg-black/80 border border-white/10 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                                            className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-5 py-4 text-base focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-colors"
                                         />
                                     </div>
                                     <div>
@@ -247,23 +292,25 @@ export default function MochilaCheckout() {
                                             value={customerPhone}
                                             onChange={(e) => setCustomerPhone(e.target.value)}
                                             required
-                                            className="w-full bg-black/80 border border-white/10 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                                            className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-5 py-4 text-base focus:border-white focus:ring-1 focus:ring-white focus:outline-none transition-colors"
                                         />
                                     </div>
                                 </div>
 
-                                {/* Daily total */}
-                                <div className="flex justify-between text-sm text-slate-400">
-                                    <span>Valor diário:</span>
-                                    <span className="text-slate-200 font-medium">
-                                        R$ {(getTotalPrice() / rentalDays).toFixed(2)}
-                                    </span>
-                                </div>
+                                {/* Summary calculations */}
+                                <div className="pt-8 border-t border-zinc-800 space-y-4">
+                                    <div className="flex justify-between text-base text-zinc-400">
+                                        <span>Valor diário (Todos)</span>
+                                        <span className="text-zinc-300 font-medium">
+                                            R$ {(getTotalPrice() / rentalDays).toFixed(2)}
+                                        </span>
+                                    </div>
 
-                                {/* Grand total */}
-                                <div className="flex justify-between text-xl font-black text-white pt-5 border-t border-white/5">
-                                    <span>Total:</span>
-                                    <span className="text-blue-500">R$ {getTotalPrice().toFixed(2)}</span>
+                                    {/* Grand total */}
+                                    <div className="flex justify-between items-end text-3xl md:text-4xl font-black text-white pt-2">
+                                        <span className="text-zinc-500 text-xl font-bold">Total</span>
+                                        <span>R$ {getTotalPrice().toFixed(2)}</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -271,21 +318,21 @@ export default function MochilaCheckout() {
                             <button
                                 onClick={handleCheckout}
                                 disabled={isSubmitting}
-                                className="magnetic-btn w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold leading-normal rounded-xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(37,211,102,0.25)] cursor-pointer min-h-[52px] text-base shrink-0 whitespace-nowrap"
-                                style={{ padding: '16px 24px' }}
+                                className="w-full bg-[#25D366] hover:bg-[#1ebc59] text-black font-black rounded-xl transition-colors flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed mt-auto"
+                                style={{ padding: '20px' }}
                             >
                                 {isSubmitting ? (
-                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                    <Loader2 className="w-6 h-6 animate-spin text-black" />
                                 ) : (
                                     <>
-                                        <MessageCircle className="w-5 h-5" />
-                                        Reservar pelo WhatsApp
+                                        <MessageCircle className="w-6 h-6" />
+                                        <span className="text-lg">Reservar pelo WhatsApp</span>
                                     </>
                                 )}
                             </button>
 
-                            <p className="text-[10px] text-center text-slate-600 mt-5 leading-relaxed px-2 uppercase tracking-tight">
-                                Seus dados serão salvos para segurança da reserva e você será encaminhado ao chat.
+                            <p className="text-sm text-center text-zinc-500 mt-6 leading-relaxed">
+                                Você será redirecionado para a nossa equipe fechar as datas do seu pedido.
                             </p>
                         </div>
                     </div>

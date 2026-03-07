@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Equipment } from '@/types';
-import { Loader2, Plus, Pencil, Trash2, Tent, MoreVertical } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, Tent } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Seeder } from './Seeder';
+import { toast } from 'sonner';
 
 export default function AdminEquipmentsPage() {
     const [equipments, setEquipments] = useState<Equipment[]>([]);
@@ -24,6 +25,7 @@ export default function AdminEquipmentsPage() {
             setEquipments(fetchedItems);
         } catch (error) {
             console.error("Erro ao buscar equipamentos:", error);
+            toast.error("Erro ao carregar a lista de equipamentos.");
         } finally {
             setLoading(false);
         }
@@ -38,175 +40,352 @@ export default function AdminEquipmentsPage() {
             try {
                 await deleteDoc(doc(db, 'equipments', id));
                 fetchEquipments();
+                toast.success('Equipamento apagado com sucesso!');
             } catch (error) {
                 console.error("Erro ao apagar equipamento", error);
-                alert('Erro ao apagar equipamento. Verifique sua conexão e tente novamente.');
+                toast.error('Erro ao apagar equipamento. Verifique sua conexão e tente novamente.');
             }
         }
     };
 
     return (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="admin-page">
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .admin-page {
+                    animation: fadeIn 0.3s ease-out;
+                }
+                .admin-header-flex {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 48px;
+                    gap: 24px;
+                    flex-wrap: wrap;
+                }
+                .admin-title {
+                    font-size: 2.5rem;
+                    font-weight: 900;
+                    margin-bottom: 8px;
+                    color: #fff;
+                    letter-spacing: -0.02em;
+                }
+                .admin-subtitle {
+                    color: #94a3b8;
+                    font-size: 1.1rem;
+                }
+                .admin-btn-primary {
+                    background-color: #2563eb;
+                    color: #fff;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 16px 24px;
+                    border-radius: 12px;
+                    text-decoration: none;
+                    transition: background-color 0.2s;
+                    white-space: nowrap;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 1rem;
+                }
+                .admin-btn-primary:hover {
+                    background-color: #3b82f6;
+                }
+
+                .admin-list-container {
+                    background-color: #09090b;
+                    border: 1px solid #27272a;
+                    border-radius: 16px;
+                    overflow: hidden;
+                }
+                .admin-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    text-align: left;
+                }
+                .admin-table th {
+                    padding: 20px 24px;
+                    font-size: 0.875rem;
+                    font-weight: bold;
+                    color: #94a3b8;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    border-bottom: 1px solid #27272a;
+                    background-color: #18181b;
+                }
+                .admin-table td {
+                    padding: 20px 24px;
+                    border-bottom: 1px solid #27272a;
+                    vertical-align: middle;
+                }
+                .admin-table tr:last-child td {
+                    border-bottom: none;
+                }
+                .admin-table tr:hover {
+                    background-color: rgba(39, 39, 42, 0.4);
+                }
+
+                .product-cell {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                }
+                .product-img {
+                    width: 64px;
+                    height: 64px;
+                    border-radius: 12px;
+                    background-color: #18181b;
+                    object-fit: cover;
+                    flex-shrink: 0;
+                }
+                .product-info {
+                    min-width: 0; 
+                }
+                .product-name {
+                    color: #fff;
+                    font-weight: bold;
+                    font-size: 1.1rem;
+                    margin-bottom: 4px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .product-desc {
+                    color: #71717a;
+                    font-size: 0.875rem;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 300px;
+                }
+                
+                .status-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 6px 12px;
+                    border-radius: 99px;
+                    font-size: 0.75rem;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+                .status-badge.active {
+                    background-color: rgba(34, 197, 94, 0.1);
+                    color: #4ade80;
+                    border: 1px solid rgba(34, 197, 94, 0.2);
+                }
+                .status-badge.inactive {
+                    background-color: rgba(161, 161, 170, 0.1);
+                    color: #a1a1aa;
+                    border: 1px solid rgba(161, 161, 170, 0.2);
+                }
+                .price-cell {
+                    color: #3b82f6;
+                    font-weight: bold;
+                    font-size: 1.1rem;
+                    white-space: nowrap;
+                }
+                
+                .actions-cell {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 8px;
+                }
+                .action-btn {
+                    padding: 10px;
+                    border-radius: 8px;
+                    background-color: transparent;
+                    border: 1px solid transparent;
+                    color: #71717a;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .action-btn:hover {
+                    background-color: #27272a;
+                    color: #fff;
+                    border-color: #3f3f46;
+                }
+                .action-btn.delete:hover {
+                    color: #ef4444;
+                    background-color: rgba(239, 68, 68, 0.1);
+                    border-color: rgba(239, 68, 68, 0.2);
+                }
+
+                .empty-state {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 80px 20px;
+                    text-align: center;
+                }
+                .empty-icon {
+                    width: 72px;
+                    height: 72px;
+                    background-color: #18181b;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-bottom: 24px;
+                    color: #71717a;
+                }
+                .empty-title {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    color: #fff;
+                    margin-bottom: 12px;
+                }
+                .empty-desc {
+                    color: #94a3b8;
+                    max-width: 400px;
+                    line-height: 1.6;
+                    margin-bottom: 32px;
+                }
+                .loader-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 100px 0;
+                }
+
+                @media (max-width: 1024px) {
+                    .admin-table {
+                        display: block;
+                    }
+                    .admin-table thead {
+                        display: none;
+                    }
+                    .admin-table tbody {
+                        display: block;
+                    }
+                    .admin-table tr {
+                        display: flex;
+                        flex-direction: column;
+                        padding: 20px;
+                        border-bottom: 1px solid #27272a;
+                    }
+                    .admin-table td {
+                        padding: 8px 0;
+                        border: none;
+                    }
+                    .actions-cell {
+                        justify-content: flex-start;
+                        margin-top: 12px;
+                    }
+                    .product-desc {
+                        max-width: 100%;
+                    }
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                `
+            }} />
+
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 sm:mb-12 gap-4">
+            <div className="admin-header-flex">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Equipamentos</h1>
-                    <p className="text-slate-400 text-sm sm:text-base">Gerencie o estoque do catálogo da loja.</p>
+                    <h1 className="admin-title">Equipamentos</h1>
+                    <p className="admin-subtitle">Gerencie o estoque do catálogo da loja.</p>
                 </div>
-                <Link
-                    href="/admin/equipments/new"
-                    className="magnetic-btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 leading-normal rounded-xl flex items-center justify-center gap-3 transition-colors shadow-lg shadow-blue-900/20 whitespace-nowrap min-h-[48px]"
-                >
-                    <Plus className="w-5 h-5" /> Novo Equipamento
+                <Link href="/admin/equipments/new" className="admin-btn-primary">
+                    <Plus size={20} />
+                    Novo Equipamento
                 </Link>
             </div>
 
-            <div className="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
+            <div className="admin-list-container">
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center py-24 sm:py-28">
-                        <Loader2 className="w-10 h-10 text-blue-500 animate-spin mb-4" />
-                        <p className="text-slate-400">Carregando catálogo completo...</p>
+                    <div className="loader-container">
+                        <Loader2 size={40} color="#3b82f6" className="animate-spin mb-4" />
+                        <p style={{ color: '#94a3b8' }}>Carregando catálogo completo...</p>
                     </div>
                 ) : equipments.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-24 sm:py-32 px-6 text-center">
-                        <div className="w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center mb-7">
-                            <Tent className="w-8 h-8 text-slate-600" />
+                    <div className="empty-state">
+                        <div className="empty-icon">
+                            <Tent size={36} />
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-3">Nenhum equipamento cadastrado</h3>
-                        <p className="text-slate-400 max-w-md mx-auto mb-10 leading-relaxed">
+                        <h3 className="empty-title">Nenhum equipamento cadastrado</h3>
+                        <p className="empty-desc">
                             Sua vitrine está vazia no momento. Adicione os itens de aluguel como barracas, lanternas ou kits completos
                             para que seus clientes possam visualizá-los.
                         </p>
-                        <Link
-                            href="/admin/equipments/new"
-                            className="magnetic-btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 flex items-center justify-center gap-3 leading-normal rounded-xl transition-colors"
-                        >
+                        <Link href="/admin/equipments/new" className="admin-btn-primary">
                             Começar a cadastrar
                         </Link>
                     </div>
                 ) : (
-                    <>
-                        {/* ── Desktop Table ──── */}
-                        <div className="hidden md:block overflow-x-auto">
-                            <table className="w-full text-left border-collapse">
-                                <thead>
-                                    <tr className="bg-slate-900/50 border-b border-slate-700">
-                                        <th className="p-4 lg:p-5 text-sm font-bold text-slate-300 uppercase tracking-wider">Produto</th>
-                                        <th className="p-4 lg:p-5 text-sm font-bold text-slate-300 uppercase tracking-wider">Status</th>
-                                        <th className="p-4 lg:p-5 text-sm font-bold text-slate-300 uppercase tracking-wider">Preço (Dia)</th>
-                                        <th className="p-4 lg:p-5 text-sm font-bold text-slate-300 uppercase tracking-wider text-right">Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-700/50">
-                                    {equipments.map((eq) => (
-                                        <tr key={eq.id} className="hover:bg-slate-700/20 transition-colors group">
-                                            <td className="p-4 lg:p-5">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="relative w-12 h-12 bg-slate-900 rounded-lg overflow-hidden shrink-0">
-                                                        <Image
-                                                            src={eq.image_urls?.[0] || 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=2000&auto=format&fit=crop'}
-                                                            alt={eq.name}
-                                                            fill
-                                                            className="object-cover"
-                                                            sizes="48px"
-                                                        />
-                                                    </div>
-                                                    <div className="min-w-0">
-                                                        <p className="text-white font-bold line-clamp-1">{eq.name}</p>
-                                                        <p className="text-slate-500 text-xs line-clamp-1 max-w-[250px]">{eq.description}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="p-4 lg:p-5">
-                                                {eq.is_active ? (
-                                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20">
-                                                        Ativo Vitrine
-                                                    </span>
-                                                ) : (
-                                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-500/10 text-slate-400 border border-slate-500/20">
-                                                        Oculto
-                                                    </span>
-                                                )}
-                                            </td>
-                                            <td className="p-4 lg:p-5">
-                                                <span className="text-blue-500 font-bold whitespace-nowrap">
-                                                    R$ {eq.price_per_day?.toFixed(2)}
-                                                </span>
-                                            </td>
-                                            <td className="p-4 lg:p-5 text-right">
-                                                <div className="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                                                    <button
-                                                        className="p-2.5 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-700 rounded-lg transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer"
-                                                        title="Editar (Em Breve)"
-                                                    >
-                                                        <Pencil className="w-4 h-4" />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDelete(eq.id, eq.name)}
-                                                        className="p-2.5 text-slate-400 hover:text-red-400 bg-slate-900 hover:bg-red-500/10 rounded-lg transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer"
-                                                        title="Apagar"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {/* ── Mobile Cards ──── */}
-                        <div className="md:hidden divide-y divide-slate-700/50">
+                    <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Status</th>
+                                <th>Preço (Dia)</th>
+                                <th style={{ textAlign: 'right' }}>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {equipments.map((eq) => (
-                                <div key={eq.id} className="p-4 sm:p-5 flex gap-4">
-                                    {/* Image */}
-                                    <div className="relative w-16 h-16 bg-slate-900 rounded-xl overflow-hidden shrink-0">
-                                        <Image
-                                            src={eq.image_urls?.[0] || 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=2000&auto=format&fit=crop'}
-                                            alt={eq.name}
-                                            fill
-                                            className="object-cover"
-                                            sizes="64px"
-                                        />
-                                    </div>
-
-                                    {/* Info */}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex justify-between items-start gap-2 mb-2">
-                                            <h4 className="text-white font-bold text-sm line-clamp-1">{eq.name}</h4>
-                                            <div className="flex items-center gap-1 shrink-0">
-                                                <button
-                                                    onClick={() => handleDelete(eq.id, eq.name)}
-                                                    className="p-2 text-slate-500 hover:text-red-400 transition-colors cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
-                                                    aria-label={`Apagar ${eq.name}`}
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
+                                <tr key={eq.id}>
+                                    <td>
+                                        <div className="product-cell">
+                                            <Image
+                                                src={eq.image_urls?.[0] || 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=2000&auto=format&fit=crop'}
+                                                alt={eq.name}
+                                                width={64}
+                                                height={64}
+                                                className="product-img"
+                                            />
+                                            <div className="product-info">
+                                                <div className="product-name">{eq.name}</div>
+                                                <div className="product-desc">{eq.description}</div>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-3 flex-wrap">
-                                            <span className="text-blue-500 font-bold text-sm">
-                                                R$ {eq.price_per_day?.toFixed(2)}/dia
-                                            </span>
-                                            {eq.is_active ? (
-                                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-500/10 text-green-400 border border-green-500/20">
-                                                    Ativo
-                                                </span>
-                                            ) : (
-                                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-500/10 text-slate-400 border border-slate-500/20">
-                                                    Oculto
-                                                </span>
-                                            )}
+                                    </td>
+                                    <td>
+                                        <span className={`status-badge ${eq.is_active ? 'active' : 'inactive'}`}>
+                                            {eq.is_active ? 'Ativo Vitrine' : 'Oculto'}
+                                        </span>
+                                    </td>
+                                    <td className="price-cell">
+                                        R$ {eq.price_per_day?.toFixed(2)}
+                                    </td>
+                                    <td>
+                                        <div className="actions-cell">
+                                            <Link
+                                                href={`/admin/equipments/${eq.id}/edit`}
+                                                className="action-btn"
+                                                title="Editar Informações e Fotos"
+                                            >
+                                                <Pencil size={20} />
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(eq.id, eq.name)}
+                                                className="action-btn delete"
+                                                title="Apagar"
+                                            >
+                                                <Trash2 size={20} />
+                                            </button>
                                         </div>
-                                    </div>
-                                </div>
+                                    </td>
+                                </tr>
                             ))}
-                        </div>
-                    </>
+                        </tbody>
+                    </table>
                 )}
             </div>
-            <Seeder />
+
+            <div style={{ marginTop: '40px' }}>
+                <Seeder />
+            </div>
         </div>
     );
 }

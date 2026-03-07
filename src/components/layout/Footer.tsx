@@ -6,7 +6,7 @@ import { db } from '@/lib/firebase';
 import { SiteSettings } from '@/types';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, MapPin, Phone } from 'lucide-react';
+import { Instagram, MapPin, Phone, LayoutDashboard } from 'lucide-react';
 
 export function Footer() {
     const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -96,6 +96,10 @@ export function Footer() {
                                 </Link>
                                 <Link href="/mochila" className="!text-white hover:text-blue-400 transition-colors w-fit text-base font-bold drop-shadow-sm">
                                     Minha Mochila
+                                </Link>
+                                <Link href="/admin/login" className="!text-white hover:text-blue-400 transition-colors w-fit text-sm font-semibold flex items-center gap-2 mt-4 opacity-50 hover:opacity-100">
+                                    <LayoutDashboard className="w-4 h-4" />
+                                    Área do Lojista
                                 </Link>
                             </nav>
                         </div>

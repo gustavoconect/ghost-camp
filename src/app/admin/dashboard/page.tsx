@@ -29,67 +29,171 @@ export default function DashboardPage() {
 
     if (loading) {
         return (
-            <div className="h-[60vh] flex items-center justify-center">
-                <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
+            <div style={{ height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Loader2 size={40} color="#3b82f6" className="animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="admin-page">
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .admin-page {
+                    animation: fadeIn 0.3s ease-out;
+                }
+                .admin-header {
+                    margin-bottom: 48px;
+                }
+                .admin-title {
+                    font-size: 2.5rem;
+                    font-weight: 900;
+                    margin-bottom: 8px;
+                    color: #fff;
+                    letter-spacing: -0.02em;
+                }
+                .admin-subtitle {
+                    color: #94a3b8;
+                    font-size: 1.1rem;
+                }
+                .dash-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                    gap: 24px;
+                    margin-bottom: 48px;
+                }
+                .dash-card {
+                    background-color: #09090b;
+                    border: 1px solid #27272a;
+                    border-radius: 16px;
+                    padding: 32px;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                }
+                .dash-card.actionable {
+                    flex-direction: column;
+                    justify-content: space-between;
+                    min-height: 180px;
+                }
+                .dash-label {
+                    color: #94a3b8;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                }
+                .dash-value {
+                    font-size: 3.5rem;
+                    font-weight: 900;
+                    color: #fff;
+                    line-height: 1;
+                }
+                .dash-icon-box {
+                    padding: 16px;
+                    background-color: rgba(59, 130, 246, 0.1);
+                    border: 1px solid rgba(59, 130, 246, 0.2);
+                    border-radius: 16px;
+                    color: #3b82f6;
+                }
+                .dash-link {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    color: #3b82f6;
+                    font-weight: bold;
+                    text-decoration: none;
+                    margin-top: 16px;
+                    transition: color 0.2s;
+                    font-size: 1.1rem;
+                }
+                .dash-link:hover {
+                    color: #60a5fa;
+                }
+                .dash-banner {
+                    background-color: #09090b;
+                    border: 1px solid #27272a;
+                    border-radius: 16px;
+                    padding: 48px;
+                    text-align: center;
+                    max-width: 800px;
+                    margin: 0 auto;
+                }
+                .dash-banner-icon {
+                    width: 72px;
+                    height: 72px;
+                    background-color: #18181b;
+                    border: 1px solid #27272a;
+                    border-radius: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 24px auto;
+                    font-size: 32px;
+                }
+                .dash-banner h3 {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    margin-bottom: 12px;
+                }
+                .dash-banner p {
+                    color: #94a3b8;
+                    line-height: 1.6;
+                    font-size: 1.1rem;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                `
+            }} />
+
             {/* Header */}
-            <div className="mb-10 sm:mb-12">
-                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Painel do Lojista</h1>
-                <p className="text-slate-400 text-sm sm:text-base">
-                    Bem-vindo de volta! Aqui está o resumo atual da Ghost Camp.
-                </p>
+            <div className="admin-header">
+                <h1 className="admin-title">Visão Geral</h1>
+                <p className="admin-subtitle">Bem-vindo de volta! Aqui está o resumo operacional da Ghost Camp.</p>
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-12 sm:mb-16">
+            <div className="dash-grid">
                 {/* Stats Card */}
-                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-7 shadow-xl flex items-start justify-between">
+                <div className="dash-card">
                     <div>
-                        <p className="text-slate-400 text-sm font-medium mb-2">Equipamentos Cadastrados</p>
-                        <h3 className="text-3xl sm:text-4xl font-black text-white">
+                        <p className="dash-label">Equipamentos Cadastrados</p>
+                        <div className="dash-value">
                             {equipmentCount === null ? (
-                                <Loader2 className="w-6 h-6 animate-spin mt-2 text-slate-500" />
+                                <Loader2 size={32} color="#94a3b8" className="animate-spin mt-2" />
                             ) : (
                                 equipmentCount
                             )}
-                        </h3>
+                        </div>
                     </div>
-                    <div className="p-3 bg-blue-500/10 rounded-xl border border-blue-500/20 shrink-0">
-                        <Tent className="w-6 h-6 text-blue-500" />
+                    <div className="dash-icon-box">
+                        <Tent size={32} />
                     </div>
                 </div>
 
                 {/* Quick Action Card */}
-                <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-7 shadow-xl flex flex-col justify-between min-h-[140px]">
-                    <div className="mb-5">
-                        <p className="text-slate-400 text-sm font-medium mb-2">Acesso Rápido</p>
-                        <h3 className="text-lg font-bold text-white">Novo Equipamento</h3>
+                <div className="dash-card actionable">
+                    <div>
+                        <p className="dash-label">Acesso Rápido</p>
+                        <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Novo Equipamento</h3>
                     </div>
-                    <Link
-                        href="/admin/equipments/new"
-                        className="flex items-center gap-2 text-blue-500 font-bold hover:text-blue-400 transition-colors w-fit"
-                    >
-                        <PlusCircle className="w-5 h-5" />
+                    <Link href="/admin/equipments/new" className="dash-link">
+                        <PlusCircle size={24} />
                         Adicionar ao catálogo
-                        <ArrowRight className="w-4 h-4" />
+                        <ArrowRight size={20} />
                     </Link>
                 </div>
             </div>
 
             {/* Info Card */}
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 sm:p-10 text-center max-w-2xl mx-auto">
-                <div className="w-16 h-16 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                    <span className="text-3xl">🚀</span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">Painel Preparado</h3>
-                <p className="text-slate-400 leading-relaxed max-w-lg mx-auto">
-                    O sistema de vendas e vitrine está rodando no cliente. Utilize o menu lateral para criar ou editar itens
-                    que vão aparecer imediatamente no catálogo público da loja.
+            <div className="dash-banner">
+                <div className="dash-banner-icon">🚀</div>
+                <h3>Painel Operacional Ativo</h3>
+                <p>
+                    O sistema de vendas e a vitrine pública estão rodando perfeitamente. Utilize o menu ao lado para adicionar ou editar os equipamentos, tudo refletirá em tempo real no site do cliente.
                 </p>
             </div>
         </div>
