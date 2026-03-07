@@ -30,7 +30,7 @@ export function EquipmentCard({ equipment }: { equipment: Equipment }) {
             className="glass-card overflow-hidden group flex flex-col h-full hover:-translate-y-1 transition-all duration-300"
             style={{ borderRadius: 'var(--radius-card)' }}
         >
-            <Link href={`/catalogo/${equipment.id}`} className="block relative aspect-[4/3] overflow-hidden bg-slate-900">
+            <Link href={`/catalogo/${equipment.id}`} className="block relative aspect-[4/3] overflow-hidden bg-black">
                 {/* Image */}
                 <Image
                     src={imageUrl}
@@ -43,17 +43,20 @@ export function EquipmentCard({ equipment }: { equipment: Equipment }) {
 
                 {/* View Details Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 backdrop-blur-[2px]">
-                    <div className="bg-white text-slate-900 px-4 py-2 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-2xl">
+                    <div className="bg-white text-black px-4 py-2 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-2xl">
                         <Eye className="w-4 h-4" />
                         Ver Detalhes
                     </div>
                 </div>
 
                 {/* Price Badge */}
-                <div className="absolute top-3 right-3 glass px-3.5 py-2 rounded-full z-10 shadow-xl">
-                    <span className="text-orange-400 font-black text-sm">
+                <div
+                    className="absolute top-3 right-3 glass rounded-full z-10 shadow-xl flex items-center justify-center w-max border border-white/10 pointer-events-none shrink-0"
+                    style={{ padding: '8px 16px' }}
+                >
+                    <span className="text-blue-400 font-bold text-sm whitespace-nowrap leading-none">
                         R$ {equipment.price_per_day.toFixed(2)}
-                        <span className="text-slate-400 font-normal text-xs"> /dia</span>
+                        <span className="text-slate-300 font-medium text-xs ml-1 leading-none">/dia</span>
                     </span>
                 </div>
 
@@ -73,10 +76,11 @@ export function EquipmentCard({ equipment }: { equipment: Equipment }) {
 
                 <button
                     onClick={handleAdd}
-                    className={`magnetic-btn slide-bg w-full py-3.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer min-h-[48px] ${added
+                    className={`magnetic-btn slide-bg w-full leading-normal rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer min-h-[48px] shrink-0 whitespace-nowrap ${added
                         ? 'bg-emerald-600 text-white scale-[0.98]'
-                        : 'bg-white/5 border border-white/10 text-white hover:bg-orange-600 hover:border-orange-600 hover:shadow-[0_0_20px_rgba(234,88,12,0.3)]'
+                        : 'bg-white/5 border border-white/10 text-white hover:bg-blue-600 hover:border-blue-600 hover:shadow-[0_0_20px_rgba(37,99,235,0.3)]'
                         }`}
+                    style={{ padding: '12px 24px' }}
                 >
                     {added ? (
                         <>

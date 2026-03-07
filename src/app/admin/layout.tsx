@@ -54,11 +54,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     ];
 
     return (
-        <div className="min-h-screen bg-slate-900 text-slate-200 flex flex-col lg:flex-row">
+        <div className="min-h-screen bg-black text-slate-200 flex flex-col lg:flex-row">
             {/* Mobile Top Bar */}
             <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-slate-800/95 backdrop-blur-xl border-b border-slate-700 flex items-center justify-between px-5 z-50">
                 <span className="text-xl font-black text-white">
-                    Ghost<span className="text-orange-500">Camp</span> Admin
+                    Ghost<span className="text-blue-500">Camp</span> Admin
                 </span>
                 <button
                     onClick={() => setMobileOpen(!mobileOpen)}
@@ -88,7 +88,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     {/* Logo Desktop */}
                     <div className="h-16 items-center justify-center border-b border-slate-700 hidden lg:flex shrink-0">
                         <span className="text-2xl font-black text-white tracking-widest uppercase">
-                            Ghost<span className="text-orange-500">Camp</span>
+                            Ghost<span className="text-blue-500">Camp</span>
                         </span>
                     </div>
 
@@ -105,7 +105,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     className={`
                                         flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 cursor-pointer min-h-[48px]
                                         ${active
-                                            ? 'bg-orange-600 border border-orange-500 text-white font-bold shadow-lg shadow-orange-900/20'
+                                            ? 'bg-blue-600 border border-blue-500 text-white font-bold shadow-lg shadow-blue-900/20'
                                             : 'text-slate-400 hover:bg-slate-700/50 hover:text-white'
                                         }
                                     `}

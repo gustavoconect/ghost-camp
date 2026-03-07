@@ -26,29 +26,29 @@ function DoubleHelixGear() {
     <svg ref={svgRef} viewBox="0 0 120 120" className="w-full h-full" fill="none">
       {/* Outer gear */}
       <g className="helix-gear-a">
-        <circle cx="60" cy="60" r="40" stroke="rgba(234,88,12,0.3)" strokeWidth="2" fill="none" />
+        <circle cx="60" cy="60" r="40" stroke="rgba(37,99,235,0.3)" strokeWidth="2" fill="none" />
         {[...Array(12)].map((_, i) => {
           const angle = (i * 30) * Math.PI / 180;
-          const x1 = 60 + 36 * Math.cos(angle);
-          const y1 = 60 + 36 * Math.sin(angle);
-          const x2 = 60 + 46 * Math.cos(angle);
-          const y2 = 60 + 46 * Math.sin(angle);
-          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(234,88,12,0.5)" strokeWidth="3" strokeLinecap="round" />;
+          const x1 = parseFloat((60 + 36 * Math.cos(angle)).toFixed(2));
+          const y1 = parseFloat((60 + 36 * Math.sin(angle)).toFixed(2));
+          const x2 = parseFloat((60 + 46 * Math.cos(angle)).toFixed(2));
+          const y2 = parseFloat((60 + 46 * Math.sin(angle)).toFixed(2));
+          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(37,99,235,0.5)" strokeWidth="3" strokeLinecap="round" />;
         })}
       </g>
       {/* Inner gear */}
       <g className="helix-gear-b">
-        <circle cx="60" cy="60" r="22" stroke="rgba(251,146,60,0.4)" strokeWidth="1.5" fill="none" />
+        <circle cx="60" cy="60" r="22" stroke="rgba(96,165,250,0.4)" strokeWidth="1.5" fill="none" />
         {[...Array(8)].map((_, i) => {
           const angle = (i * 45) * Math.PI / 180;
-          const x1 = 60 + 18 * Math.cos(angle);
-          const y1 = 60 + 18 * Math.sin(angle);
-          const x2 = 60 + 26 * Math.cos(angle);
-          const y2 = 60 + 26 * Math.sin(angle);
-          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(251,146,60,0.6)" strokeWidth="2.5" strokeLinecap="round" />;
+          const x1 = parseFloat((60 + 18 * Math.cos(angle)).toFixed(2));
+          const y1 = parseFloat((60 + 18 * Math.sin(angle)).toFixed(2));
+          const x2 = parseFloat((60 + 26 * Math.cos(angle)).toFixed(2));
+          const y2 = parseFloat((60 + 26 * Math.sin(angle)).toFixed(2));
+          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(96,165,250,0.6)" strokeWidth="2.5" strokeLinecap="round" />;
         })}
       </g>
-      <circle cx="60" cy="60" r="5" fill="rgba(234,88,12,0.8)" />
+      <circle cx="60" cy="60" r="5" fill="rgba(37,99,235,0.8)" />
     </svg>
   );
 }
@@ -91,7 +91,7 @@ const features = [
     icon: Tent,
     title: 'Camping Premium',
     description: 'Barracas resistentes e acessórios modulares para quem não abre mão do conforto e segurança no topo da montanha.',
-    color: 'orange',
+    color: 'blue',
     artifact: DoubleHelixGear,
   },
   {
@@ -104,7 +104,7 @@ const features = [
 ];
 
 const colorMap: Record<string, { icon: string; border: string; bg: string }> = {
-  orange: { icon: 'text-orange-500', border: 'border-orange-500/20', bg: 'bg-orange-500/10' },
+  orange: { icon: 'text-blue-500', border: 'border-orange-500/20', bg: 'bg-blue-500/10' },
   blue: { icon: 'text-blue-400', border: 'border-blue-500/20', bg: 'bg-blue-500/10' },
   emerald: { icon: 'text-emerald-400', border: 'border-emerald-500/20', bg: 'bg-emerald-500/10' },
 };
@@ -200,7 +200,7 @@ export default function Home() {
       <section ref={heroRef} className="relative h-[100svh] min-h-[600px] flex items-center justify-center overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-slate-900/60 bg-gradient-to-t from-slate-900 via-transparent to-slate-900/40 z-10" />
+          <div className="absolute inset-0 bg-black/60 bg-gradient-to-t from-slate-900 via-transparent to-slate-900/40 z-10" />
           <Image
             src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=2070&auto=format&fit=crop"
             alt="Acampamento na montanha sob céu estrelado"
@@ -213,14 +213,17 @@ export default function Home() {
 
         {/* Content */}
         <div className="relative z-20 text-center px-5 sm:px-8 max-w-4xl mx-auto">
-          <div className="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8">
-            <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
+          <div
+            className="hero-badge inline-flex items-center justify-center gap-3 rounded-full glass mb-8 w-max max-w-full"
+            style={{ padding: '12px 24px' }}
+          >
+            <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
             <span className="text-sm font-medium text-slate-200">Equipamentos de alta performance liberados</span>
           </div>
 
           <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-white drop-shadow-2xl leading-[1.1]">
             Aventura Sem{' '}
-            <span className="text-orange-500">Limites</span>
+            <span className="text-blue-500">Limites</span>
           </h1>
 
           <p className="hero-subtitle text-base sm:text-lg md:text-xl lg:text-2xl text-slate-200 mb-12 max-w-2xl mx-auto leading-relaxed drop-shadow-md font-light">
@@ -231,7 +234,8 @@ export default function Home() {
           <div className="hero-cta flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/catalogo"
-              className="magnetic-btn slide-bg px-8 py-4 bg-orange-600 text-white font-bold rounded-2xl flex items-center gap-3 hover:bg-orange-500 transition-all shadow-[0_0_30px_rgba(234,88,12,0.4)] group"
+              className="magnetic-btn slide-bg bg-blue-600 text-white font-bold rounded-2xl inline-flex items-center justify-center gap-3 leading-normal hover:bg-blue-500 transition-all shadow-[0_0_30px_rgba(37,99,235,0.4)] group shrink-0"
+              style={{ padding: '16px 32px' }}
             >
               Ver Equipamentos
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -244,7 +248,7 @@ export default function Home() {
               const Icon = badge.icon;
               return (
                 <div key={badge.label} className="trust-badge flex items-center gap-2 text-slate-300/70">
-                  <Icon className="w-4 h-4 text-orange-500/70" />
+                  <Icon className="w-4 h-4 text-blue-500/70" />
                   <span className="text-xs sm:text-sm font-medium">{badge.label}</span>
                 </div>
               );
@@ -262,19 +266,19 @@ export default function Home() {
       </section>
 
       {/* ── FEATURES (Stacking Cards) ────────── */}
-      <section className="section-spacer bg-slate-900 relative">
+      <section className="section-spacer relative bg-black flex flex-col items-center w-full">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 flex flex-col items-center">
           {/* Section header */}
-          <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-24">
-            <p className="text-orange-500/80 text-sm font-bold uppercase tracking-widest mb-4">
+          <div className="flex flex-col items-center justify-center text-center max-w-3xl mb-16 sm:mb-24 w-full">
+            <p className="text-blue-500/80 text-sm font-bold uppercase tracking-widest mb-4 inline-block">
               Por que nos escolher
             </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight w-full">
               Projetado para Exploradores
             </h2>
-            <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
+            <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
               Trabalhamos com marcas de ponta para garantir que seu único foco seja a jornada.
             </p>
           </div>
@@ -286,10 +290,10 @@ export default function Home() {
               const Artifact = feature.artifact;
               const colors = colorMap[feature.color];
               return (
-                <div key={idx}>
+                <div key={idx} className="w-full">
                   <div
-                    className="feature-card stacking-card glass-card p-8 sm:p-12 lg:p-16 flex flex-col items-center gap-10 lg:grid lg:grid-cols-2 lg:gap-20"
-                    style={{ borderRadius: 'var(--radius-card)' }}
+                    className="feature-card stacking-card glass-card flex flex-col items-center gap-12 lg:grid lg:grid-cols-2 lg:gap-24 w-full"
+                    style={{ borderRadius: 'var(--radius-card)', padding: '64px' }}
                   >
                     {/* Artifact side — sempre primeiro no mobile, grande e centralizado */}
                     <div className={`flex items-center justify-center w-full ${idx % 2 === 1 ? 'lg:order-2' : 'lg:order-1'}`}>
@@ -301,14 +305,14 @@ export default function Home() {
                     </div>
 
                     {/* Text side */}
-                    <div className={`flex flex-col items-center lg:items-start text-center lg:text-left ${idx % 2 === 1 ? 'lg:order-1' : 'lg:order-2'}`}>
+                    <div className={`flex flex-col items-center lg:items-start text-center lg:text-left ${idx % 2 === 1 ? 'lg:order-1' : 'lg:order-2'} px-4 sm:px-8`}>
                       <div className={`w-16 h-16 sm:w-20 sm:h-20 ${colors.bg} border ${colors.border} ${colors.icon} rounded-2xl flex items-center justify-center mb-6 sm:mb-8`}>
                         <Icon className="w-8 h-8 sm:w-10 sm:h-10" />
                       </div>
                       <h3 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-5 text-white">
                         {feature.title}
                       </h3>
-                      <p className="text-slate-400 leading-relaxed font-light text-base sm:text-lg max-w-lg">
+                      <p className="text-slate-300 leading-relaxed font-medium text-base sm:text-lg max-w-lg">
                         {feature.description}
                       </p>
                     </div>
@@ -321,27 +325,28 @@ export default function Home() {
       </section>
 
       {/* ── MEMBERSHIP CTA ────────────────────── */}
-      <section className="section-spacer bg-slate-950 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent" />
+      <section className="section-spacer w-full bg-black relative overflow-hidden flex flex-col items-center justify-center">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
 
         {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-        <div ref={ctaRef} className="max-w-3xl mx-auto px-5 sm:px-8 text-center relative z-10">
-          <p className="text-orange-500/80 text-sm font-bold uppercase tracking-widest mb-4">
+        <div ref={ctaRef} className="w-full max-w-3xl mx-auto px-5 sm:px-8 text-center relative z-10 flex flex-col items-center">
+          <p className="text-blue-500/80 text-sm font-bold uppercase tracking-widest mb-4">
             Comece Agora
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
             Sua Próxima Aventura
             <br className="hidden sm:block" />
-            <span className="text-orange-500"> Começa Aqui</span>
+            <span className="text-blue-500"> Começa Aqui</span>
           </h2>
           <p className="text-slate-400 text-base sm:text-lg leading-relaxed mb-10 sm:mb-12 max-w-xl mx-auto">
             Escolha seus equipamentos, defina o período e finalize pelo WhatsApp. Sem complicação, sem burocracia.
           </p>
           <Link
             href="/catalogo"
-            className="magnetic-btn slide-bg inline-flex items-center gap-3 px-10 py-5 bg-orange-600 text-white font-bold rounded-2xl hover:bg-orange-500 transition-all shadow-[0_0_40px_rgba(234,88,12,0.3)] group text-lg"
+            className="magnetic-btn slide-bg inline-flex items-center justify-center gap-3 leading-normal bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-500 transition-all shadow-[0_0_40px_rgba(37,99,235,0.3)] group text-xl mx-auto shrink-0 whitespace-nowrap"
+            style={{ padding: '16px 32px' }}
           >
             Explorar Catálogo
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

@@ -19,10 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${inter.className} bg-slate-900 text-slate-50`}>
+      <body className={`${inter.className} bg-black text-slate-50 min-h-screen flex flex-col items-center`}>
         <Navbar />
-        {children}
-        <Footer />
+        <div className="w-full max-w-[1200px] mx-auto flex flex-col gap-12 px-4 sm:px-6 md:px-8 flex-1">
+          {children}
+        </div>
+        <div className="w-full">
+          <Footer />
+        </div>
         <Toaster position="top-center" richColors />
       </body>
     </html>

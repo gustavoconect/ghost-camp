@@ -126,7 +126,7 @@ export default function NewEquipmentPage() {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 disabled={loading}
-                                className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-orange-500 focus:outline-none text-base"
+                                className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 focus:outline-none text-base"
                                 placeholder="Ex: Barraca The North Face Alpine"
                                 required
                             />
@@ -145,7 +145,7 @@ export default function NewEquipmentPage() {
                                     value={price}
                                     onChange={(e) => setPrice(e.target.value)}
                                     disabled={loading}
-                                    className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-orange-500 focus:outline-none text-base"
+                                    className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 focus:outline-none text-base"
                                     placeholder="Ex: 45.00"
                                     required
                                 />
@@ -160,7 +160,7 @@ export default function NewEquipmentPage() {
                                         checked={isActive}
                                         onChange={(e) => setIsActive(e.target.checked)}
                                         disabled={loading}
-                                        className="w-5 h-5 accent-orange-500 rounded bg-slate-800 border-slate-700 cursor-pointer"
+                                        className="w-5 h-5 accent-blue-500 rounded bg-slate-800 border-slate-700 cursor-pointer"
                                     />
                                     <span className="text-white font-medium">Equipamento Ativo</span>
                                 </div>
@@ -177,7 +177,7 @@ export default function NewEquipmentPage() {
                                 onChange={(e) => setDescription(e.target.value)}
                                 disabled={loading}
                                 rows={4}
-                                className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none text-base"
+                                className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none text-base"
                                 placeholder="Detalhes técnicos, capacidade, peso, itens inclusos..."
                             />
                         </div>
@@ -193,8 +193,8 @@ export default function NewEquipmentPage() {
                                 <div className="flex flex-col items-center justify-center py-5 px-4 text-center">
                                     {file ? (
                                         <>
-                                            <Upload className="w-10 h-10 text-orange-500 mb-3" />
-                                            <p className="text-orange-500 font-bold truncate max-w-[250px]">{file.name}</p>
+                                            <Upload className="w-10 h-10 text-blue-500 mb-3" />
+                                            <p className="text-blue-500 font-bold truncate max-w-[250px]">{file.name}</p>
                                             <p className="text-xs text-slate-500 mt-1">Clique para trocar</p>
                                         </>
                                     ) : (
@@ -223,7 +223,7 @@ export default function NewEquipmentPage() {
                     {loading && uploadProgress > 0 && uploadProgress < 100 && (
                         <div className="w-full bg-slate-900 rounded-full h-2.5 border border-slate-700 overflow-hidden">
                             <div
-                                className="bg-orange-600 h-2.5 rounded-full transition-all duration-300"
+                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
                                 style={{ width: `${uploadProgress}%` }}
                             />
                         </div>
@@ -234,7 +234,7 @@ export default function NewEquipmentPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="magnetic-btn w-full bg-orange-600 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-orange-900/20 min-h-[52px] text-base cursor-pointer"
+                            className="magnetic-btn w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 leading-normal rounded-xl flex items-center justify-center gap-3 transition-colors shadow-lg shadow-blue-900/20 min-h-[52px] text-base cursor-pointer"
                         >
                             {loading ? (
                                 <><Loader2 className="w-5 h-5 animate-spin" /> Salvando & Fazendo Upload...</>

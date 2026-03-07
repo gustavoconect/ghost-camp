@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ghost-dark: #0f172a;
-  --color-ghost-brand: #ea580c;
+  --color-ghost-dark: #000000;
+  --color-ghost-brand: #2563eb;
   --radius-card: 2rem;
   --radius-section: 3rem;
 }

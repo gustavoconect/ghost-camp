@@ -86,7 +86,7 @@ export default function MochilaCheckout() {
     };
 
     return (
-        <main className="min-h-screen pt-28 sm:pt-32 bg-slate-900 px-5 sm:px-6 lg:px-8 pb-20 sm:pb-28">
+        <main className="min-h-screen pt-28 sm:pt-32 bg-black px-5 sm:px-6 lg:px-8 pb-20 sm:pb-28">
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}
@@ -100,7 +100,7 @@ export default function MochilaCheckout() {
                     </Link>
                     <div>
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white flex items-center gap-3">
-                            <ShoppingBag className="w-7 h-7 sm:w-8 sm:h-8 text-orange-500 shrink-0" />
+                            <ShoppingBag className="w-7 h-7 sm:w-8 sm:h-8 text-blue-500 shrink-0" />
                             Sua Mochila
                         </h1>
                         {items.length > 0 && (
@@ -128,7 +128,8 @@ export default function MochilaCheckout() {
                         </p>
                         <Link
                             href="/catalogo"
-                            className="magnetic-btn slide-bg inline-flex items-center gap-2 bg-orange-600 text-white font-bold py-4 px-8 rounded-xl hover:bg-orange-500 transition-all shadow-[0_0_20px_rgba(234,88,12,0.3)] cursor-pointer"
+                            className="magnetic-btn slide-bg inline-flex items-center justify-center gap-3 bg-blue-600 text-white font-bold leading-normal rounded-xl hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] cursor-pointer shrink-0 whitespace-nowrap"
+                            style={{ padding: '12px 24px' }}
                         >
                             Explorar Catálogo
                         </Link>
@@ -145,7 +146,7 @@ export default function MochilaCheckout() {
                                     className="glass-card rounded-2xl p-4 sm:p-5 flex gap-4 sm:gap-5"
                                 >
                                     {/* Image */}
-                                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-slate-900 rounded-xl overflow-hidden shrink-0">
+                                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-black rounded-xl overflow-hidden shrink-0">
                                         <Image
                                             src={item.image_urls?.[0] || 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=2000&auto=format&fit=crop'}
                                             alt={item.name}
@@ -193,7 +194,7 @@ export default function MochilaCheckout() {
                                             </div>
 
                                             {/* Price */}
-                                            <p className="text-orange-400 font-bold text-sm sm:text-base">
+                                            <p className="text-blue-400 font-bold text-sm sm:text-base">
                                                 R$ {item.price_per_day.toFixed(2)}{' '}
                                                 <span className="text-xs text-slate-500">/dia</span>
                                             </p>
@@ -213,7 +214,7 @@ export default function MochilaCheckout() {
                                 {/* Rental Days Input */}
                                 <div>
                                     <label className="text-sm font-medium text-slate-400 mb-2.5 flex items-center gap-2">
-                                        <CalendarIcon className="w-4 h-4 text-orange-500" />
+                                        <CalendarIcon className="w-4 h-4 text-blue-500" />
                                         Dias de Aventura
                                     </label>
                                     <input
@@ -221,7 +222,7 @@ export default function MochilaCheckout() {
                                         min="1"
                                         value={rentalDays}
                                         onChange={(e) => setRentalDays(parseInt(e.target.value) || 1)}
-                                        className="w-full bg-slate-900/80 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-orange-500 focus:outline-none focus:border-orange-500 transition-colors text-base"
+                                        className="w-full bg-black/80 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 transition-colors text-base"
                                         placeholder="Quantos dias?"
                                     />
                                 </div>
@@ -236,7 +237,7 @@ export default function MochilaCheckout() {
                                             value={customerName}
                                             onChange={(e) => setCustomerName(e.target.value)}
                                             required
-                                            className="w-full bg-slate-900/80 border border-white/10 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
+                                            className="w-full bg-black/80 border border-white/10 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
                                         />
                                     </div>
                                     <div>
@@ -246,7 +247,7 @@ export default function MochilaCheckout() {
                                             value={customerPhone}
                                             onChange={(e) => setCustomerPhone(e.target.value)}
                                             required
-                                            className="w-full bg-slate-900/80 border border-white/10 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
+                                            className="w-full bg-black/80 border border-white/10 text-white rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
                                         />
                                     </div>
                                 </div>
@@ -262,7 +263,7 @@ export default function MochilaCheckout() {
                                 {/* Grand total */}
                                 <div className="flex justify-between text-xl font-black text-white pt-5 border-t border-white/5">
                                     <span>Total:</span>
-                                    <span className="text-orange-500">R$ {getTotalPrice().toFixed(2)}</span>
+                                    <span className="text-blue-500">R$ {getTotalPrice().toFixed(2)}</span>
                                 </div>
                             </div>
 
@@ -270,7 +271,8 @@ export default function MochilaCheckout() {
                             <button
                                 onClick={handleCheckout}
                                 disabled={isSubmitting}
-                                className="magnetic-btn w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(37,211,102,0.25)] cursor-pointer min-h-[52px] text-base"
+                                className="magnetic-btn w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold leading-normal rounded-xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(37,211,102,0.25)] cursor-pointer min-h-[52px] text-base shrink-0 whitespace-nowrap"
+                                style={{ padding: '16px 24px' }}
                             >
                                 {isSubmitting ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />

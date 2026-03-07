@@ -62,7 +62,7 @@ export default function BookingsAdminPage() {
     if (loading) {
         return (
             <div className="h-[60vh] flex items-center justify-center">
-                <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+                <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
             </div>
         );
     }
@@ -75,7 +75,7 @@ export default function BookingsAdminPage() {
                     <p className="text-slate-400 text-sm">Gerencie as solicitações de aluguel recebidas pelo site.</p>
                 </div>
                 <div className="glass px-4 py-2 rounded-xl text-slate-300 text-sm flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-orange-500" />
+                    <Tag className="w-4 h-4 text-blue-500" />
                     {bookings.length} solicitações
                 </div>
             </div>
@@ -91,7 +91,7 @@ export default function BookingsAdminPage() {
             ) : (
                 <div className="grid grid-cols-1 gap-4">
                     {bookings.map((booking) => (
-                        <div key={booking.id} className="glass-card p-5 sm:p-6 rounded-2xl border border-white/5 hover:border-orange-500/20 transition-all flex flex-col lg:flex-row lg:items-center gap-6">
+                        <div key={booking.id} className="glass-card p-5 sm:p-6 rounded-2xl border border-white/5 hover:border-blue-500/20 transition-all flex flex-col lg:flex-row lg:items-center gap-6">
                             {/* Cliente */}
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-3 mb-3">
@@ -106,7 +106,7 @@ export default function BookingsAdminPage() {
                                 <div className="space-y-1.5 ml-[52px]">
                                     {booking.items.map((item, i) => (
                                         <p key={i} className="text-sm text-slate-300 flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                                             {item.quantity}x {item.name}
                                         </p>
                                     ))}
@@ -119,7 +119,7 @@ export default function BookingsAdminPage() {
                                     <Calendar className="w-3.5 h-3.5" />
                                     {booking.rental_days} diárias
                                 </p>
-                                <p className="text-lg font-black text-orange-500">R$ {booking.total_value.toFixed(2)}</p>
+                                <p className="text-lg font-black text-blue-500">R$ {booking.total_value.toFixed(2)}</p>
                             </div>
 
                             {/* Status e Ações */}
@@ -127,10 +127,10 @@ export default function BookingsAdminPage() {
                                 <select
                                     value={booking.status}
                                     onChange={(e) => updateStatus(booking.id, e.target.value as any)}
-                                    className={`text-xs font-bold px-3 py-2 rounded-lg border-0 focus:ring-2 focus:ring-orange-500 cursor-pointer ${booking.status === 'pending' ? 'bg-amber-500/10 text-amber-500' :
-                                            booking.status === 'confirmed' ? 'bg-blue-500/10 text-blue-500' :
-                                                booking.status === 'delivered' ? 'bg-purple-500/10 text-purple-500' :
-                                                    'bg-emerald-500/10 text-emerald-500'
+                                    className={`text-xs font-bold px-3 py-2 rounded-lg border-0 focus:ring-2 focus:ring-blue-500 cursor-pointer ${booking.status === 'pending' ? 'bg-amber-500/10 text-amber-500' :
+                                        booking.status === 'confirmed' ? 'bg-blue-500/10 text-blue-500' :
+                                            booking.status === 'delivered' ? 'bg-purple-500/10 text-purple-500' :
+                                                'bg-emerald-500/10 text-emerald-500'
                                         }`}
                                 >
                                     <option value="pending">Pendente</option>

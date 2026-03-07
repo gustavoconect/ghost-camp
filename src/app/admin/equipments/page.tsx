@@ -55,7 +55,7 @@ export default function AdminEquipmentsPage() {
                 </div>
                 <Link
                     href="/admin/equipments/new"
-                    className="magnetic-btn bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 px-6 rounded-xl flex items-center gap-2 transition-colors shadow-lg shadow-orange-900/20 whitespace-nowrap min-h-[48px]"
+                    className="magnetic-btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 leading-normal rounded-xl flex items-center justify-center gap-3 transition-colors shadow-lg shadow-blue-900/20 whitespace-nowrap min-h-[48px]"
                 >
                     <Plus className="w-5 h-5" /> Novo Equipamento
                 </Link>
@@ -64,7 +64,7 @@ export default function AdminEquipmentsPage() {
             <div className="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-24 sm:py-28">
-                        <Loader2 className="w-10 h-10 text-orange-500 animate-spin mb-4" />
+                        <Loader2 className="w-10 h-10 text-blue-500 animate-spin mb-4" />
                         <p className="text-slate-400">Carregando catálogo completo...</p>
                     </div>
                 ) : equipments.length === 0 ? (
@@ -79,7 +79,7 @@ export default function AdminEquipmentsPage() {
                         </p>
                         <Link
                             href="/admin/equipments/new"
-                            className="magnetic-btn bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 px-8 rounded-xl transition-colors"
+                            className="magnetic-btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 flex items-center justify-center gap-3 leading-normal rounded-xl transition-colors"
                         >
                             Começar a cadastrar
                         </Link>
@@ -129,7 +129,7 @@ export default function AdminEquipmentsPage() {
                                                 )}
                                             </td>
                                             <td className="p-4 lg:p-5">
-                                                <span className="text-orange-500 font-bold whitespace-nowrap">
+                                                <span className="text-blue-500 font-bold whitespace-nowrap">
                                                     R$ {eq.price_per_day?.toFixed(2)}
                                                 </span>
                                             </td>
@@ -186,7 +186,7 @@ export default function AdminEquipmentsPage() {
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-3 flex-wrap">
-                                            <span className="text-orange-500 font-bold text-sm">
+                                            <span className="text-blue-500 font-bold text-sm">
                                                 R$ {eq.price_per_day?.toFixed(2)}/dia
                                             </span>
                                             {eq.is_active ? (

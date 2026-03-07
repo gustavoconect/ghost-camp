@@ -61,19 +61,19 @@ export default function Catalog() {
     }, [equipments, searchTerm, selectedCategory, sortBy]);
 
     return (
-        <main className="min-h-screen pt-28 sm:pt-32 bg-slate-900 px-5 sm:px-6 lg:px-8 pb-20 sm:pb-28">
+        <main className="min-h-screen pt-28 sm:pt-32 bg-black px-5 sm:px-6 lg:px-8 pb-20 sm:pb-28">
             <div className="max-w-7xl mx-auto">
 
                 {/* Header */}
                 <div className="text-center mb-10 sm:mb-12 mt-4 sm:mt-8">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6">
-                        <Compass className="w-5 h-5 text-orange-500" />
+                        <Compass className="w-5 h-5 text-blue-500" />
                         <span className="text-sm font-medium text-slate-200">Catálogo Oficial</span>
                     </div>
 
                     <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-5 tracking-tight leading-tight">
                         Equipamentos{' '}
-                        <span className="text-orange-500">Premium</span>
+                        <span className="text-blue-500">Premium</span>
                     </h1>
                 </div>
 
@@ -88,31 +88,33 @@ export default function Catalog() {
                                 placeholder="Buscar equipamento..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full glass pl-12 pr-4 py-3.5 rounded-2xl text-white placeholder-slate-500 focus:ring-2 focus:ring-orange-500 focus:outline-none border-0 transition-all text-sm"
+                                className="w-full glass pl-12 pr-4 py-3.5 rounded-2xl text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:outline-none border-0 transition-all text-sm"
                             />
                         </div>
 
                         {/* Sort */}
                         <div className="flex items-center gap-3 w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0 no-scrollbar">
-                            <div className="relative shrink-0">
+                            <div className="relative shrink-0 w-max bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-full hover:bg-white/[0.08] transition-all">
                                 <select
                                     value={sortBy}
                                     onChange={(e) => setSortBy(e.target.value as any)}
-                                    className="appearance-none glass pl-4 pr-10 py-3 rounded-xl text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500 border-0 cursor-pointer"
+                                    className="appearance-none bg-transparent rounded-full text-sm text-slate-200 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer tracking-wide"
+                                    style={{ padding: '12px 48px 12px 24px' }}
                                 >
-                                    <option value="default">Relevância</option>
-                                    <option value="price-asc">Menor Preço</option>
-                                    <option value="price-desc">Maior Preço</option>
+                                    <option value="default" className="bg-slate-900">Relevância</option>
+                                    <option value="price-asc" className="bg-slate-900">Menor Preço</option>
+                                    <option value="price-desc" className="bg-slate-900">Maior Preço</option>
                                 </select>
-                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+                                <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                             </div>
 
                             <button
                                 onClick={() => setSelectedCategory('all')}
-                                className={`px-5 py-3 rounded-xl text-sm font-medium transition-all shrink-0 border ${selectedCategory === 'all'
-                                        ? 'bg-orange-600 border-orange-500 text-white shadow-lg shadow-orange-900/20'
-                                        : 'glass border-white/5 text-slate-400 hover:text-white hover:border-white/20'
+                                className={`rounded-full text-sm font-bold transition-all shrink-0 border whitespace-nowrap leading-none ${selectedCategory === 'all'
+                                    ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-900/20'
+                                    : 'bg-white/[0.03] backdrop-blur-md border-white/5 text-slate-300 hover:text-white hover:bg-white/[0.08]'
                                     }`}
+                                style={{ padding: '12px 24px' }}
                             >
                                 Todos
                             </button>
@@ -120,10 +122,11 @@ export default function Catalog() {
                                 <button
                                     key={cat.id}
                                     onClick={() => setSelectedCategory(cat.id)}
-                                    className={`px-5 py-3 rounded-xl text-sm font-medium transition-all shrink-0 border ${selectedCategory === cat.id
-                                            ? 'bg-orange-600 border-orange-500 text-white shadow-lg shadow-orange-900/20'
-                                            : 'glass border-white/5 text-slate-400 hover:text-white hover:border-white/20'
+                                    className={`rounded-full text-sm font-bold transition-all shrink-0 border whitespace-nowrap leading-none ${selectedCategory === cat.id
+                                        ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-900/20'
+                                        : 'bg-white/[0.03] backdrop-blur-md border-white/5 text-slate-300 hover:text-white hover:bg-white/[0.08]'
                                         }`}
+                                    style={{ padding: '12px 24px' }}
                                 >
                                     {cat.name}
                                 </button>
@@ -136,7 +139,7 @@ export default function Catalog() {
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-24 sm:py-32">
                         <div className="glass p-6 rounded-full mb-5">
-                            <Loader2 className="w-10 h-10 animate-spin text-orange-500" />
+                            <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
                         </div>
                         <p className="text-slate-400 font-medium animate-pulse">Buscando equipamentos...</p>
                     </div>

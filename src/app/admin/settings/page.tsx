@@ -72,7 +72,7 @@ export default function SettingsPage() {
 
             {loading ? (
                 <div className="flex justify-center items-center py-24">
-                    <Loader2 className="w-10 h-10 animate-spin text-orange-500" />
+                    <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
                 </div>
             ) : (
                 <form
@@ -93,7 +93,7 @@ export default function SettingsPage() {
                                     value={settings.whatsapp_number}
                                     onChange={(e) => setSettings({ ...settings, whatsapp_number: e.target.value })}
                                     disabled={saving}
-                                    className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl pl-8 pr-4 py-3.5 focus:ring-2 focus:ring-orange-500 focus:outline-none text-base"
+                                    className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl pl-8 pr-4 py-3.5 focus:ring-2 focus:ring-blue-500 focus:outline-none text-base"
                                     placeholder="Ex: 5511982703261"
                                     required
                                 />
@@ -115,7 +115,7 @@ export default function SettingsPage() {
                                     value={settings.instagram_url}
                                     onChange={(e) => setSettings({ ...settings, instagram_url: e.target.value })}
                                     disabled={saving}
-                                    className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl pl-10 pr-4 py-3.5 focus:ring-2 focus:ring-orange-500 focus:outline-none text-base"
+                                    className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl pl-10 pr-4 py-3.5 focus:ring-2 focus:ring-blue-500 focus:outline-none text-base"
                                     placeholder="Ex: https://instagram.com/ghosttripsoficial"
                                 />
                             </div>
@@ -140,7 +140,7 @@ export default function SettingsPage() {
                         <button
                             type="submit"
                             disabled={saving}
-                            className="magnetic-btn w-full sm:w-auto bg-orange-600 hover:bg-orange-500 disabled:opacity-50 text-white font-bold py-3.5 px-8 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-orange-900/20 min-h-[48px] cursor-pointer"
+                            className="magnetic-btn w-full sm:w-auto bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold py-3 px-6 leading-normal rounded-xl flex items-center justify-center gap-3 transition-colors shadow-lg shadow-blue-900/20 min-h-[48px] cursor-pointer"
                         >
                             {saving ? (
                                 <><Loader2 className="w-5 h-5 animate-spin" /> Salvando...</>

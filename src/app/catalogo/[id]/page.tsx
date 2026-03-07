@@ -67,8 +67,8 @@ export default function EquipmentDetailsPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-900">
-                <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+            <div className="min-h-screen flex items-center justify-center bg-black">
+                <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
             </div>
         );
     }
@@ -80,7 +80,7 @@ export default function EquipmentDetailsPage() {
         : ['https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=2000&auto=format&fit=crop'];
 
     return (
-        <main className="min-h-screen pt-28 sm:pt-32 bg-slate-900 px-5 sm:px-6 lg:px-8 pb-20 sm:pb-32">
+        <main className="min-h-screen pt-28 sm:pt-32 bg-black px-5 sm:px-6 lg:px-8 pb-20 sm:pb-32">
             <div className="max-w-7xl mx-auto">
                 {/* Breadcrumb */}
                 <Link
@@ -110,7 +110,7 @@ export default function EquipmentDetailsPage() {
                                     <button
                                         key={idx}
                                         onClick={() => setActiveImage(idx)}
-                                        className={`relative aspect-square rounded-xl overflow-hidden glass border transition-all ${activeImage === idx ? 'border-orange-500 scale-95 ring-2 ring-orange-500/20' : 'border-white/5 opacity-50 hover:opacity-100'
+                                        className={`relative aspect-square rounded-xl overflow-hidden glass border transition-all ${activeImage === idx ? 'border-blue-500 scale-95 ring-2 ring-blue-500/20' : 'border-white/5 opacity-50 hover:opacity-100'
                                             }`}
                                     >
                                         <Image src={img} alt={`${equipment.name} ${idx}`} fill className="object-cover" />
@@ -123,13 +123,13 @@ export default function EquipmentDetailsPage() {
                     {/* Content Side */}
                     <div className="flex flex-col">
                         <div className="mb-8">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 text-xs font-bold uppercase tracking-wider mb-4">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-bold uppercase tracking-wider mb-4">
                                 Equipamento Original
                             </div>
                             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
                                 {equipment.name}
                             </h1>
-                            <p className="text-3xl font-black text-orange-500 flex items-baseline gap-2">
+                            <p className="text-3xl font-black text-blue-500 flex items-baseline gap-2">
                                 R$ {equipment.price_per_day.toFixed(2)}
                                 <span className="text-slate-500 text-lg font-normal">/diária</span>
                             </p>
@@ -169,8 +169,8 @@ export default function EquipmentDetailsPage() {
                                 onClick={handleAddToCart}
                                 disabled={adding}
                                 className={`magnetic-btn slide-bg group w-full py-5 rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3 shadow-2xl cursor-pointer ${adding
-                                        ? 'bg-emerald-600 text-white'
-                                        : 'bg-orange-600 text-white hover:bg-orange-500 hover:shadow-orange-900/40'
+                                    ? 'bg-emerald-600 text-white'
+                                    : 'bg-blue-600 text-white hover:bg-blue-500 hover:shadow-blue-900/40'
                                     }`}
                             >
                                 {adding ? (
