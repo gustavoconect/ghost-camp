@@ -1,7 +1,7 @@
 'use client';
 
 import { Equipment } from '@/types';
-import Image from 'next/image';
+
 import { useCartStore } from '@/store/useCartStore';
 import { ShoppingBag, Check } from 'lucide-react';
 import { useState } from 'react';
@@ -35,12 +35,14 @@ export function EquipmentCard({ equipment }: { equipment: Equipment }) {
                 className="relative aspect-[4/3] w-full overflow-hidden bg-black shrink-0 cursor-pointer"
                 onClick={() => setIsTouched(!isTouched)}
             >
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                     src={imageUrl}
                     alt={equipment.name}
-                    fill
-                    className={`object-cover transition-all duration-500 ease-out ${isTouched ? 'scale-110 blur-sm brightness-[0.3]' : 'group-hover:scale-105 group-hover:blur-sm group-hover:brightness-[0.3]'}`}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=800&auto=format&fit=crop';
+                    }}
+                    className={`w-full h-full object-cover transition-all duration-500 ease-out ${isTouched ? 'scale-110 blur-sm brightness-[0.3]' : 'group-hover:scale-105 group-hover:blur-sm group-hover:brightness-[0.3]'}`}
                 />
 
                 {/* Overlay Content: Description + Ver Detalhes */}

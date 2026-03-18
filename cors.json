@@ -1,0 +1,21 @@
+[
+    {
+        "origin": [
+            "*"
+        ],
+        "method": [
+            "GET",
+            "HEAD",
+            "PUT",
+            "POST",
+            "DELETE"
+        ],
+        "responseHeader": [
+            "Content-Type",
+            "x-goog-resumable",
+            "x-firebase-storage-version",
+            "Authorization"
+        ],
+        "maxAgeSeconds": 3600
+    }
+]

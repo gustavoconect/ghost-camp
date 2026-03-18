@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { doc, getDoc, collection, getDocs, query, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Equipment } from '@/types';
-import Image from 'next/image';
+
 import {
     ArrowLeft,
     ShoppingBag,
@@ -119,12 +119,14 @@ export default function EquipmentDetailsPage() {
                     {/* Visual Side */}
                     <div className="space-y-6">
                         <div className="relative aspect-square sm:aspect-[4/3] lg:aspect-square rounded-3xl overflow-hidden bg-black border border-slate-800 shadow-2xl">
-                            <Image
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
                                 src={images[activeImage]}
                                 alt={equipment.name}
-                                fill
-                                className="object-cover"
-                                priority
+                                onError={(e) => {
+                                    e.currentTarget.src = 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=800&auto=format&fit=crop';
+                                }}
+                                className="w-full h-full object-cover"
                             />
                         </div>
 
@@ -137,7 +139,8 @@ export default function EquipmentDetailsPage() {
                                         className={`relative aspect-square rounded-xl overflow-hidden bg-black cursor-pointer border transition-all ${activeImage === idx ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-800 opacity-60 hover:opacity-100 hover:border-slate-600'
                                             }`}
                                     >
-                                        <Image src={img} alt={`${equipment.name} ${idx}`} fill className="object-cover" />
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={img} alt={`${equipment.name} ${idx}`} onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=200&auto=format&fit=crop'; }} className="w-full h-full object-cover" />
                                     </button>
                                 ))}
                             </div>

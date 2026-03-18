@@ -6,7 +6,7 @@ import { db } from '@/lib/firebase';
 import { Equipment } from '@/types';
 import { Loader2, Plus, Pencil, Trash2, Tent } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
+
 import { Seeder } from './Seeder';
 import { toast } from 'sonner';
 
@@ -337,11 +337,13 @@ export default function AdminEquipmentsPage() {
                                 <tr key={eq.id}>
                                     <td>
                                         <div className="product-cell">
-                                            <Image
-                                                src={eq.image_urls?.[0] || 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=2000&auto=format&fit=crop'}
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img
+                                                src={eq.image_urls?.[0] || 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=200&auto=format&fit=crop'}
                                                 alt={eq.name}
-                                                width={64}
-                                                height={64}
+                                                onError={(e) => {
+                                                    e.currentTarget.src = 'https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=200&auto=format&fit=crop';
+                                                }}
                                                 className="product-img"
                                             />
                                             <div className="product-info">
