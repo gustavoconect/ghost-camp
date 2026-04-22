@@ -212,7 +212,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="relative z-20 text-center px-5 sm:px-8 max-w-4xl mx-auto">
+        <div className="relative z-20 text-center px-6 sm:px-10 max-w-4xl mx-auto">
           <div
             className="hero-badge inline-flex items-center justify-center gap-3 rounded-full glass mb-8 w-max max-w-full"
             style={{ padding: '12px 24px' }}
@@ -269,7 +269,7 @@ export default function Home() {
       <section className="section-spacer relative bg-black flex flex-col items-center w-full">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
 
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 flex flex-col items-center">
+        <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col items-center">
           {/* Section header */}
           <div className="flex flex-col items-center justify-center text-center max-w-3xl mb-16 sm:mb-24 w-full">
             <p className="text-blue-500/80 text-sm font-bold uppercase tracking-widest mb-4 inline-block">
@@ -331,7 +331,7 @@ export default function Home() {
         {/* Background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-        <div ref={ctaRef} className="w-full max-w-3xl mx-auto px-5 sm:px-8 text-center relative z-10 flex flex-col items-center">
+        <div ref={ctaRef} className="w-full max-w-3xl mx-auto px-6 sm:px-10 text-center relative z-10 flex flex-col items-center">
           <p className="text-blue-500/80 text-sm font-bold uppercase tracking-widest mb-4">
             Comece Agora
           </p>

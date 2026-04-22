@@ -86,16 +86,27 @@ export default function MochilaCheckout() {
     };
 
     return (
-        <main className="min-h-screen bg-black px-5 sm:px-6 lg:px-8 pb-20 sm:pb-28">
-            {/* Espaçador OBRIGATÓRIO (100px) para compensar a Navbar fixa em todas as telas */}
-            <div style={{ height: '100px', flexShrink: 0 }} aria-hidden="true" />
+        <main className="min-h-screen bg-black w-full">
+            {/* Espaçador OBRIGATÓRIO (90px) para compensar a Navbar fixa em todas as telas */}
+            <div style={{ height: '90px', flexShrink: 0, width: '100%' }} aria-hidden="true" />
+
+            <div className="w-full flex justify-center">
+                <div className="w-full mx-auto">
             <style dangerouslySetInnerHTML={{
                 __html: `
                 .mochila-container {
                     width: 100%;
-                    max-width: 1450px; /* Aumentado drasticamente o limite Desktop */
+                    max-width: 80rem; /* 1280px = max-w-7xl */
                     margin: 0 auto;
+                    padding: 0 1.5rem; /* px-6 */
                 }
+                @media (min-width: 640px) {
+                    .mochila-container { padding: 0 2.5rem; } /* sm:px-10 */
+                }
+                @media (min-width: 1024px) {
+                    .mochila-container { padding: 0 3rem; } /* lg:px-12 */
+                }
+                .mochila-container { padding-bottom: 5rem; }
                 .mochila-grid {
                     display: grid;
                     grid-template-columns: 1fr;
@@ -337,6 +348,8 @@ export default function MochilaCheckout() {
                         </div>
                     </div>
                 )}
+            </div>
+            </div>
             </div>
         </main>
     );

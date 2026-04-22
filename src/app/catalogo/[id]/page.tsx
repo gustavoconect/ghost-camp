@@ -46,7 +46,7 @@ export default function EquipmentDetailsPage() {
                 }
 
                 // Fetch Recommended (just pulling a few docs for now)
-                const q = query(collection(db, 'equipments'), limit(6));
+                const q = query(collection(db, 'equipments'), limit(12));
                 const querySnapshot = await getDocs(q);
                 const fetchedRecs: Equipment[] = [];
                 querySnapshot.forEach((doc) => {
@@ -56,8 +56,8 @@ export default function EquipmentDetailsPage() {
                     }
                 });
 
-                // Keep max 4
-                setRecommended(fetchedRecs.slice(0, 4));
+                // Keep max 8 for horizontal scroll
+                setRecommended(fetchedRecs.slice(0, 8));
 
             } catch (error) {
                 console.error("Erro ao buscar detalhes:", error);
@@ -98,17 +98,19 @@ export default function EquipmentDetailsPage() {
         : ['https://images.unsplash.com/photo-1504280390224-ddee6b219569?q=80&w=2000&auto=format&fit=crop'];
 
     return (
-        <main className="min-h-screen bg-[#050510] px-5 sm:px-6 lg:px-8 pb-20 sm:pb-32">
+        <main className="min-h-screen bg-black w-full">
             {/* Forced spacer for fixed navbar */}
-            <div style={{ height: '100px', width: '100%' }} aria-hidden="true" />
-            <div className="max-w-[1200px] mx-auto">
+            <div style={{ height: '90px', width: '100%' }} aria-hidden="true" />
+
+            <div className="w-full flex justify-center">
+                <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pb-20 sm:pb-32">
                 {/* Back Button */}
                 <div className="mb-10">
                     <button
                         onClick={() => router.back()}
                         className="inline-flex items-center gap-3 text-slate-400 hover:text-white transition-colors group cursor-pointer font-medium"
                     >
-                        <div className="p-2 bg-slate-800/50 rounded-full group-hover:bg-blue-600 transition-colors">
+                        <div className="p-2 bg-slate-800/50 group-hover:bg-blue-600 transition-colors">
                             <ArrowLeft className="w-5 h-5 group-hover:text-white transition-colors" />
                         </div>
                         Voltar
@@ -118,7 +120,7 @@ export default function EquipmentDetailsPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
                     {/* Visual Side */}
                     <div className="space-y-6">
-                        <div className="relative aspect-square sm:aspect-[4/3] lg:aspect-square rounded-3xl overflow-hidden bg-black border border-slate-800 shadow-2xl">
+                        <div className="relative aspect-square sm:aspect-[4/3] lg:aspect-square overflow-hidden bg-black border border-slate-800">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={images[activeImage]}
@@ -136,7 +138,7 @@ export default function EquipmentDetailsPage() {
                                     <button
                                         key={idx}
                                         onClick={() => setActiveImage(idx)}
-                                        className={`relative aspect-square rounded-xl overflow-hidden bg-black cursor-pointer border transition-all ${activeImage === idx ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-800 opacity-60 hover:opacity-100 hover:border-slate-600'
+                                        className={`relative aspect-square overflow-hidden bg-black cursor-pointer border transition-all ${activeImage === idx ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-800 opacity-60 hover:opacity-100 hover:border-slate-600'
                                             }`}
                                     >
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -150,7 +152,7 @@ export default function EquipmentDetailsPage() {
                     {/* Content Side */}
                     <div className="flex flex-col">
                         <div className="mb-8">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-bold uppercase tracking-wider mb-5">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-bold uppercase tracking-wider mb-5">
                                 Equipamento Premium
                             </div>
                             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-5 leading-tight tracking-tight">
@@ -162,16 +164,18 @@ export default function EquipmentDetailsPage() {
                             </p>
                         </div>
 
-                        <div className="prose prose-invert max-w-none mb-10">
-                            <p className="text-slate-400 text-lg leading-relaxed font-medium">
-                                {equipment.description}
-                            </p>
+                        <div className="relative mb-10">
+                            <div className="max-h-[280px] overflow-y-auto pr-2 scrollbar-thin">
+                                <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                                    {equipment.description}
+                                </p>
+                            </div>
                         </div>
 
                         {/* Features Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                            <div className="bg-slate-900/50 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
-                                <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-500">
+                            <div className="bg-slate-900/50 border border-slate-800 p-5 flex items-center gap-4">
+                                <div className="p-3 bg-emerald-500/10 text-emerald-500">
                                     <ShieldCheck className="w-6 h-6" />
                                 </div>
                                 <div>
@@ -179,8 +183,8 @@ export default function EquipmentDetailsPage() {
                                     <p className="text-slate-500 text-xs font-medium">Limpeza profissional</p>
                                 </div>
                             </div>
-                            <div className="bg-slate-900/50 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
-                                <div className="p-3 bg-blue-500/10 rounded-xl text-blue-500">
+                            <div className="bg-slate-900/50 border border-slate-800 p-5 flex items-center gap-4">
+                                <div className="p-3 bg-blue-500/10 text-blue-500">
                                     <Truck className="w-6 h-6" />
                                 </div>
                                 <div>
@@ -195,7 +199,7 @@ export default function EquipmentDetailsPage() {
                             <button
                                 onClick={handleAddToCart}
                                 disabled={adding}
-                                className={`w-full py-5 rounded-2xl font-black text-lg transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer outline-none ${adding
+                                className={`w-full py-6 font-black text-xl transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer outline-none ${adding
                                     ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/20'
                                     : 'bg-white text-black hover:bg-blue-600 hover:text-white hover:shadow-[0_0_30px_rgba(37,99,235,0.3)]'
                                     }`}
@@ -218,28 +222,32 @@ export default function EquipmentDetailsPage() {
 
                 {/* Recommended Section */}
                 {recommended.length > 0 && (
-                    <div className="mt-24 sm:mt-32 pt-16 border-t border-slate-800/50">
-                        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                    <div className="mt-20 sm:mt-28 pt-12 border-t border-slate-800/50">
+                        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
                             <div>
-                                <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">
+                                <h2 className="text-xl sm:text-2xl font-black text-white mb-1 tracking-tight">
                                     Completando sua Aventura
                                 </h2>
-                                <p className="text-slate-400 font-medium">Outros aventureiros costumam alugar junto</p>
+                                <p className="text-slate-400 text-sm font-medium">Outros aventureiros costumam alugar junto</p>
                             </div>
-                            <Link href="/catalogo" className="text-blue-500 font-bold hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                            <Link href="/catalogo" className="text-blue-500 text-sm font-bold hover:text-blue-400 transition-colors flex items-center gap-2 group shrink-0">
                                 Ver todo catálogo
                                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                        {/* Horizontal scroll carousel */}
+                        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-4 -mx-1 px-1">
                             {recommended.map(eq => (
-                                <EquipmentCard key={eq.id} equipment={eq} />
+                                <div key={eq.id} className="w-[calc(33.333%-8px)] min-w-[160px] max-w-[220px] shrink-0">
+                                    <EquipmentCard equipment={eq} />
+                                </div>
                             ))}
                         </div>
                     </div>
                 )}
             </div>
-        </main>
+        </div>
+    </main>
     );
 }

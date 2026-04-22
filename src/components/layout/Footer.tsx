@@ -27,9 +27,9 @@ export function Footer() {
     }, []);
 
     return (
-        <footer className="w-full bg-[#030308] border-t border-slate-800/80 relative mt-24">
+        <footer className="w-full bg-[#030308] border-t border-slate-800/80 relative mt-24 flex justify-center">
 
-            <div className="w-full max-w-[1200px] mx-auto px-6 sm:px-8 pt-24 pb-12 flex flex-col gap-20">
+            <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-24 pb-12 flex flex-col gap-20">
                 {/* 
                   Main Split Container
                   Desktop: Row (Logo Left / Links Right)
