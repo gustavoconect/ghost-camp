@@ -9,6 +9,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 import Image from 'next/image';
+import HowItWorksSection from '@/components/landing/HowItWorksSection';
 
 /* ── Animated Artifacts ─────────────────────── */
 
@@ -323,6 +324,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── HOW IT WORKS ──────────────────────── */}
+      <HowItWorksSection />
 
       {/* ── MEMBERSHIP CTA ────────────────────── */}
       <section className="section-spacer w-full bg-black relative overflow-hidden flex flex-col items-center justify-center">
