@@ -55,16 +55,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     return (
         <div className="admin-root">
-            {/* Espaçador OBRIGATÓRIO (80px) para compensar a Navbar fixa do site */}
-            <div style={{ height: '80px', flexShrink: 0, width: '100%' }} aria-hidden="true" />
-
             <style dangerouslySetInnerHTML={{
                 __html: `
                 .admin-root {
                     display: flex;
                     flex-direction: column;
                     width: 100vw;
-                    margin-left: calc(-50vw + 50%); /* Força ocupar 100vw passando as barreiras do layout global */
                     min-height: 100vh;
                     background: #000;
                     color: #fff;
@@ -86,8 +82,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     display: flex;
                     flex-direction: column;
                     position: sticky;
-                    top: 80px; /* Alinhado abaixo do spacer do Navbar global */
-                    height: calc(100vh - 80px);
+                    top: 0;
+                    height: 100vh;
                 }
                 .admin-sidebar-header {
                     height: 80px;
@@ -178,7 +174,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     justify-content: space-between;
                     padding: 0 20px;
                     position: sticky;
-                    top: 80px;
+                    top: 0;
                     z-index: 50;
                 }
                 .mobile-toggle {
@@ -199,7 +195,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 @media (max-width: 1024px) {
                     .admin-sidebar {
                         position: fixed;
-                        top: 80px;
+                        top: 0;
                         left: -100%;
                         z-index: 40;
                         transition: left 0.3s ease;
