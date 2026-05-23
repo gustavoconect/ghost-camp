@@ -147,6 +147,22 @@ export default function Home() {
       // Trust badges stagger
       gsap.fromTo('.trust-badge', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.15, delay: 1.2, ease: 'power2.out' });
 
+      gsap.fromTo('.home-section-heading',
+        { y: 48, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.home-section-heading',
+            start: 'top 82%',
+            end: 'bottom top',
+            toggleActions: 'play reverse play reverse',
+          },
+        }
+      );
+
       // Stacking cards with ScrollTrigger + sticky positioning
       const cards = gsap.utils.toArray<HTMLElement>('.feature-card');
       cards.forEach((card, i) => {
@@ -175,7 +191,12 @@ export default function Home() {
           { y: 60, opacity: 0 },
           {
             y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' },
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 88%',
+              end: 'bottom top',
+              toggleActions: 'play reverse play reverse',
+            },
           }
         );
       });
@@ -186,7 +207,12 @@ export default function Home() {
           { y: 60, opacity: 0 },
           {
             y: 0, opacity: 1, duration: 1, ease: 'power3.out',
-            scrollTrigger: { trigger: ctaRef.current, start: 'top 85%' },
+            scrollTrigger: {
+              trigger: ctaRef.current,
+              start: 'top 85%',
+              end: 'bottom top',
+              toggleActions: 'play reverse play reverse',
+            },
           }
         );
       }
@@ -272,7 +298,7 @@ export default function Home() {
 
         <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col items-center">
           {/* Section header */}
-          <div className="flex flex-col items-center justify-center text-center max-w-3xl mb-16 sm:mb-24 w-full">
+          <div className="home-section-heading flex flex-col items-center justify-center text-center max-w-3xl mb-16 sm:mb-24 w-full">
             <p className="text-blue-500/80 text-sm font-bold uppercase tracking-widest mb-4 inline-block">
               Por que nos escolher
             </p>

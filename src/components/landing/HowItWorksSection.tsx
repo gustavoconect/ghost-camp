@@ -131,23 +131,51 @@ export default function HowItWorksSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.fromTo('.how-header',
+        { y: 44, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.85,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.how-header',
+            start: 'top 82%',
+            end: 'bottom top',
+            toggleActions: 'play reverse play reverse',
+          }
+        }
+      );
+
       // Steps entrance (lines and numbers)
       gsap.fromTo('.step-item',
         { y: 30, opacity: 0 },
         {
           y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out',
-          scrollTrigger: { trigger: '.steps-container', start: 'top 80%' }
+          scrollTrigger: {
+            trigger: '.steps-container',
+            start: 'top 82%',
+            end: 'bottom top',
+            toggleActions: 'play reverse play reverse',
+          }
         }
       );
 
       // Accordion entrance
-      gsap.fromTo('.accordion-container',
-        { y: 30, opacity: 0 },
-        {
-          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
-          scrollTrigger: { trigger: '.accordion-container', start: 'top 85%' }
-        }
-      );
+      gsap.utils.toArray<HTMLElement>('.accordion-container').forEach((container) => {
+        gsap.fromTo(container,
+          { y: 30, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: {
+              trigger: container,
+              start: 'top 85%',
+              end: 'bottom top',
+              toggleActions: 'play reverse play reverse',
+            }
+          }
+        );
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -162,7 +190,7 @@ export default function HowItWorksSection() {
       <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col items-center z-10 gap-12 md:gap-16">
 
         {/* Header */}
-        <div className="max-w-3xl text-center flex flex-col items-center w-full">
+        <div className="how-header max-w-3xl text-center flex flex-col items-center w-full">
           <p className="text-blue-500 text-sm font-bold uppercase tracking-widest mb-4">
             Aventura Descomplicada
           </p>

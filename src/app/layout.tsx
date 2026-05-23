@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${inter.className} bg-black text-slate-50 min-h-screen flex flex-col`}>
         <AppChrome>
           {children}

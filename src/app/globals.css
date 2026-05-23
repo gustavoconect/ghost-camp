@@ -8,31 +8,42 @@
 }
 
 /* ── Base Reset ─────────────────────────────── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
 
-body {
-  color: var(--foreground);
-  background: var(--color-ghost-dark);
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  body {
+    color: var(--foreground);
+    background: var(--color-ghost-dark);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ghost-brand);
+    outline-offset: 2px;
+  }
 }
 
 /* ── Noise Overlay – Visual Texture ───────────── */
@@ -123,15 +134,4 @@ body::after {
 .section-spacer-sm {
   padding-top: clamp(3rem, 6vw, 6rem);
   padding-bottom: clamp(3rem, 6vw, 6rem);
-}
-
-/* ── Scroll Smooth ────────────────────────────── */
-html {
-  scroll-behavior: smooth;
-}
-
-/* ── Focus visible for accessibility ──────────── */
-:focus-visible {
-  outline: 2px solid var(--color-ghost-brand);
-  outline-offset: 2px;
 }
