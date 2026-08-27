@@ -60,7 +60,7 @@ export function EquipmentCard({ equipment }: { equipment: Equipment }) {
                     <span className="text-blue-500 font-black text-sm sm:text-lg leading-none">
                         R$ {equipment.price_per_day.toFixed(2)}
                     </span>
-                    <span className="text-slate-400 text-[9px] sm:text-[11px] font-bold leading-none mb-0.5">
+                    <span className="text-slate-400 text-xs font-bold leading-none mb-0.5">
                         /dia
                     </span>
                 </div>

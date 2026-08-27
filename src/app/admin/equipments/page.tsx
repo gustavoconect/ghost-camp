@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Equipment } from '@/types';
-import { Loader2, Plus, Pencil, Trash2, Tent } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, Tent, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Seeder } from './Seeder';
@@ -13,6 +13,8 @@ import { toast } from 'sonner';
 export default function AdminEquipmentsPage() {
     const [equipments, setEquipments] = useState<Equipment[]>([]);
     const [loading, setLoading] = useState(true);
+    const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     async function fetchEquipments() {
         try {
@@ -35,16 +37,19 @@ export default function AdminEquipmentsPage() {
         fetchEquipments();
     }, []);
 
-    const handleDelete = async (id: string, name: string) => {
-        if (window.confirm(`Tem certeza que deseja apagar o equipamento "${name}"? Essa ação não pode ser desfeita.`)) {
-            try {
-                await deleteDoc(doc(db, 'equipments', id));
-                fetchEquipments();
-                toast.success('Equipamento apagado com sucesso!');
-            } catch (error) {
-                console.error("Erro ao apagar equipamento", error);
-                toast.error('Erro ao apagar equipamento. Verifique sua conexão e tente novamente.');
-            }
+    const confirmDelete = async () => {
+        if (!deleteTarget) return;
+        setIsDeleting(true);
+        try {
+            await deleteDoc(doc(db, 'equipments', deleteTarget.id));
+            setDeleteTarget(null);
+            fetchEquipments();
+            toast.success('Equipamento apagado com sucesso!');
+        } catch (error) {
+            console.error("Erro ao apagar equipamento", error);
+            toast.error('Erro ao apagar equipamento. Verifique sua conexão e tente novamente.');
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -139,7 +144,7 @@ export default function AdminEquipmentsPage() {
                                                     <Pencil size={18} />
                                                 </Link>
                                                 <button
-                                                    onClick={() => handleDelete(eq.id, eq.name)}
+                                                    onClick={() => setDeleteTarget({ id: eq.id, name: eq.name })}
                                                     className="p-2.5 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
                                                     title="Apagar"
                                                     aria-label={`Apagar ${eq.name}`}
@@ -155,6 +160,44 @@ export default function AdminEquipmentsPage() {
                     </div>
                 )}
             </div>
+
+            {/* Accessible Confirmation Modal */}
+            {deleteTarget && (
+                <div
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="modal-title"
+                    className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in"
+                >
+                    <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-6">
+                        <div className="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center mx-auto">
+                            <AlertTriangle size={24} />
+                        </div>
+                        <div className="text-center space-y-2">
+                            <h3 id="modal-title" className="text-xl font-bold text-white">Excluir Equipamento?</h3>
+                            <p className="text-slate-400 text-sm">
+                                Tem certeza que deseja remover <strong className="text-white">&quot;{deleteTarget.name}&quot;</strong> do catálogo? Essa ação não pode ser desfeita.
+                            </p>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <button
+                                onClick={() => setDeleteTarget(null)}
+                                disabled={isDeleting}
+                                className="flex-1 py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-slate-300 font-bold transition-colors min-h-[44px] cursor-pointer"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                disabled={isDeleting}
+                                className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold transition-colors min-h-[44px] flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-red-600/25"
+                            >
+                                {isDeleting ? <Loader2 size={18} className="animate-spin" /> : 'Confirmar Exclusão'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <div className="mt-10">
                 <Seeder />

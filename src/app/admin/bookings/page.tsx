@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { collection, query, orderBy, onSnapshot, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Loader2, MessageCircle, Clock, Trash2, User, Calendar, Tag } from 'lucide-react';
+import { Loader2, MessageCircle, Clock, Trash2, User, Calendar, Tag, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Booking {
@@ -20,6 +20,8 @@ interface Booking {
 export default function BookingsAdminPage() {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
+    const [deleteTarget, setDeleteTarget] = useState<{ id: string; customer_name: string } | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         const q = query(collection(db, 'bookings'), orderBy('created_at', 'desc'));
@@ -50,14 +52,18 @@ export default function BookingsAdminPage() {
         }
     };
 
-    const deleteBooking = async (id: string) => {
-        if (!confirm("Excluir esta reserva permanentemente?")) return;
+    const confirmDeleteBooking = async () => {
+        if (!deleteTarget) return;
+        setIsDeleting(true);
         try {
-            await deleteDoc(doc(db, 'bookings', id));
-            toast.success("Reserva removida");
+            await deleteDoc(doc(db, 'bookings', deleteTarget.id));
+            setDeleteTarget(null);
+            toast.success("Reserva removida com sucesso!");
         } catch (error) {
             console.error("Erro delete", error);
-            toast.error("Erro ao excluir");
+            toast.error("Erro ao excluir reserva");
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -155,7 +161,7 @@ export default function BookingsAdminPage() {
                                 </a>
 
                                 <button
-                                    onClick={() => deleteBooking(booking.id)}
+                                    onClick={() => setDeleteTarget({ id: booking.id, customer_name: booking.customer_name })}
                                     className="p-2.5 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-xl transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center border border-red-500/20"
                                     title="Excluir reserva"
                                     aria-label={`Excluir reserva de ${booking.customer_name}`}
@@ -165,6 +171,44 @@ export default function BookingsAdminPage() {
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {/* Accessible Confirmation Modal */}
+            {deleteTarget && (
+                <div
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="modal-booking-title"
+                    className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in"
+                >
+                    <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-6">
+                        <div className="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center mx-auto">
+                            <AlertTriangle size={24} />
+                        </div>
+                        <div className="text-center space-y-2">
+                            <h3 id="modal-booking-title" className="text-xl font-bold text-white">Excluir Reserva?</h3>
+                            <p className="text-slate-400 text-sm">
+                                Tem certeza que deseja remover o pedido de <strong className="text-white">&quot;{deleteTarget.customer_name}&quot;</strong>?
+                            </p>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <button
+                                onClick={() => setDeleteTarget(null)}
+                                disabled={isDeleting}
+                                className="flex-1 py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-slate-300 font-bold transition-colors min-h-[44px] cursor-pointer"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={confirmDeleteBooking}
+                                disabled={isDeleting}
+                                className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold transition-colors min-h-[44px] flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-red-600/25"
+                            >
+                                {isDeleting ? <Loader2 size={18} className="animate-spin" /> : 'Confirmar Exclusão'}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

@@ -26,7 +26,7 @@ function DoubleHelixGear() {
     return () => ctx.revert();
   }, []);
   return (
-    <svg ref={svgRef} viewBox="0 0 120 120" className="w-full h-full" fill="none">
+    <svg ref={svgRef} viewBox="0 0 120 120" className="w-full h-full" fill="none" aria-hidden="true" focusable="false">
       {/* Outer gear */}
       <g className="helix-gear-a">
         <circle cx="60" cy="60" r="40" stroke="rgba(37,99,235,0.3)" strokeWidth="2" fill="none" />
@@ -74,7 +74,7 @@ function EKGWaveform() {
     return () => ctx.revert();
   }, []);
   return (
-    <svg ref={svgRef} viewBox="0 0 120 60" className="w-full h-full" fill="none">
+    <svg ref={svgRef} viewBox="0 0 120 60" className="w-full h-full" fill="none" aria-hidden="true" focusable="false">
       <path
         className="ekg-path"
         d="M0,30 L15,30 L20,30 L25,10 L30,50 L35,20 L40,40 L45,30 L60,30 L65,30 L70,10 L75,50 L80,20 L85,40 L90,30 L120,30"

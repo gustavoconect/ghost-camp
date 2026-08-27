@@ -92,13 +92,17 @@ const faqs = [
   }
 ];
 
-function AccordionItem({ item, isOpen, onClick }: { item: any, isOpen: boolean, onClick: () => void }) {
+function AccordionItem({ item, isOpen, onClick, idx }: { item: any, isOpen: boolean, onClick: () => void, idx: number }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const Icon = item.icon;
+  const contentId = `faq-content-${idx}`;
+  const buttonId = `faq-button-${idx}`;
 
   return (
     <div className="border-b border-slate-800/60 overflow-hidden">
       <button
+        id={buttonId}
+        aria-controls={contentId}
         className="w-full flex items-center justify-between py-6 min-h-[44px] text-left group transition-colors hover:text-blue-400 outline-none cursor-pointer"
         onClick={onClick}
         aria-expanded={isOpen}
@@ -114,6 +118,9 @@ function AccordionItem({ item, isOpen, onClick }: { item: any, isOpen: boolean, 
         <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
       <div
+        id={contentId}
+        role="region"
+        aria-labelledby={buttonId}
         ref={contentRef}
         className="transition-all duration-500 ease-in-out"
         style={{ height: isOpen ? contentRef.current?.scrollHeight : 0, opacity: isOpen ? 1 : 0 }}
@@ -234,6 +241,7 @@ export default function HowItWorksSection() {
               <AccordionItem
                 key={idx}
                 item={faq}
+                idx={idx}
                 isOpen={openAccordion === idx}
                 onClick={() => setOpenAccordion(openAccordion === idx ? -1 : idx)}
               />
