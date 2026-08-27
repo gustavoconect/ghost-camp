@@ -35,12 +35,12 @@ export default function EditEquipmentPage({ params }: { params: Promise<{ id: st
                     setName(data.name || '');
                     setDescription(data.description || '');
                     setPrice(data.price_per_day?.toString() || '');
-                    setIsActive(data.is_active !== false); // default to true if undefined
+                    setIsActive(data.is_active !== false);
 
                     if (data.image_urls && Array.isArray(data.image_urls) && data.image_urls.length > 0) {
                         setImageUrls(data.image_urls);
                     } else {
-                        setImageUrls(['']); // Ensure at least one empty field if no URLs exist
+                        setImageUrls(['']);
                     }
                 } else {
                     toast.error('Equipamento não encontrado.');
@@ -71,7 +71,7 @@ export default function EditEquipmentPage({ params }: { params: Promise<{ id: st
 
     const removeUrlField = (index: number) => {
         if (imageUrls.length === 1) {
-            setImageUrls(['']); // Keep at least one empty field
+            setImageUrls(['']);
             return;
         }
         setImageUrls(prev => prev.filter((_, i) => i !== index));
@@ -80,7 +80,6 @@ export default function EditEquipmentPage({ params }: { params: Promise<{ id: st
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Clean empty URLs
         const validUrls = imageUrls.filter(url => url.trim() !== '');
 
         if (!name.trim()) {
@@ -133,7 +132,7 @@ export default function EditEquipmentPage({ params }: { params: Promise<{ id: st
 
     if (loadingData) {
         return (
-            <div className="admin-page flex items-center justify-center min-h-[60vh]">
+            <div className="flex items-center justify-center min-h-[60vh]">
                 <Loader2 size={48} className="animate-spin text-blue-500" />
             </div>
         );
@@ -141,341 +140,139 @@ export default function EditEquipmentPage({ params }: { params: Promise<{ id: st
 
     if (success) {
         return (
-            <div className="admin-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
-                <CheckCircle size={64} color="#22c55e" style={{ marginBottom: '24px' }} />
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff', marginBottom: '12px' }}>Sucesso!</h1>
-                <p style={{ color: '#94a3b8', fontSize: '1.1rem' }}>Equipamento atualizado com êxito. Redirecionando...</p>
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center animate-in fade-in">
+                <CheckCircle size={64} className="text-emerald-500 mb-6" />
+                <h1 className="text-3xl font-black text-white mb-3">Sucesso!</h1>
+                <p className="text-slate-400 text-lg">Equipamento atualizado com êxito. Redirecionando...</p>
             </div>
         );
     }
 
     return (
-        <div className="admin-page admin-form-page">
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                .admin-page {
-                    animation: fadeIn 0.3s ease-out;
-                }
-                .admin-form-page {
-                    max-width: 900px;
-                }
-                .admin-header-flex {
-                    display: flex;
-                    align-items: center;
-                    gap: 16px;
-                    margin-bottom: 48px;
-                }
-                .back-btn {
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 12px;
-                    background-color: #09090b;
-                    border: 1px solid #27272a;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: #94a3b8;
-                    text-decoration: none;
-                    transition: all 0.2s;
-                }
-                .back-btn:hover {
-                    background-color: #18181b;
-                    color: #fff;
-                    border-color: #3f3f46;
-                }
-                .admin-title {
-                    font-size: 2.5rem;
-                    font-weight: 900;
-                    margin: 0;
-                    color: #fff;
-                    letter-spacing: -0.02em;
-                }
-                
-                .admin-panel {
-                    background-color: #09090b;
-                    border: 1px solid #27272a;
-                    border-radius: 16px;
-                    padding: 40px;
-                }
-                .form-group {
-                    margin-bottom: 24px;
-                }
-                .form-label {
-                    display: block;
-                    font-size: 0.875rem;
-                    font-weight: bold;
-                    color: #cbd5e1;
-                    margin-bottom: 8px;
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                }
-                .form-control {
-                    width: 100%;
-                    background-color: #18181b;
-                    border: 1px solid #27272a;
-                    border-radius: 12px;
-                    padding: 16px;
-                    color: #fff;
-                    font-size: 1rem;
-                    transition: border-color 0.2s;
-                }
-                .form-control:focus {
-                    outline: none;
-                    border-color: #3b82f6;
-                }
-                textarea.form-control {
-                    min-height: 120px;
-                    resize: vertical;
-                }
-                
-                .form-row {
-                    display: flex;
-                    gap: 24px;
-                }
-                .form-col {
-                    flex: 1;
-                }
-
-                .price-wrapper {
-                    position: relative;
-                }
-                .price-symbol {
-                    position: absolute;
-                    left: 16px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    color: #94a3b8;
-                    font-weight: bold;
-                }
-                .price-wrapper input {
-                    padding-left: 48px;
-                }
-
-                .toggle-wrapper {
-                    display: flex;
-                    align-items: center;
-                    height: 54px;
-                    background-color: #18181b;
-                    border: 1px solid #27272a;
-                    border-radius: 12px;
-                    padding: 0 16px;
-                    gap: 12px;
-                    cursor: pointer;
-                }
-                .toggle-checkbox {
-                    width: 20px;
-                    height: 20px;
-                    accent-color: #3b82f6;
-                    cursor: pointer;
-                }
-                .toggle-text {
-                    color: #fff;
-                    font-weight: 500;
-                }
-
-                .url-inputs-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 12px;
-                }
-                .url-input-row {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                }
-                .url-input-wrapper {
-                    flex: 1;
-                    position: relative;
-                }
-                .url-icon {
-                    position: absolute;
-                    left: 16px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    color: #71717a;
-                }
-                .url-input-wrapper input {
-                    padding-left: 48px;
-                }
-                .remove-url-btn {
-                    background-color: #27272a;
-                    border: none;
-                    width: 54px;
-                    height: 54px;
-                    border-radius: 12px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: #ef4444;
-                    cursor: pointer;
-                    transition: background-color 0.2s;
-                }
-                .remove-url-btn:hover {
-                    background-color: #3f3f46;
-                }
-                .add-url-btn {
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    color: #3b82f6;
-                    background: none;
-                    border: none;
-                    font-weight: bold;
-                    cursor: pointer;
-                    padding: 8px 0;
-                    margin-top: 8px;
-                    width: max-content;
-                }
-                .add-url-btn:hover {
-                    text-decoration: underline;
-                }
-
-                .submit-btn {
-                    width: 100%;
-                    background-color: #2563eb;
-                    color: #fff;
-                    border: none;
-                    border-radius: 12px;
-                    padding: 18px 24px;
-                    font-size: 1.1rem;
-                    font-weight: bold;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 12px;
-                    cursor: pointer;
-                    transition: background-color 0.2s;
-                    margin-top: 40px;
-                }
-                .submit-btn:hover:not(:disabled) {
-                    background-color: #3b82f6;
-                }
-                .submit-btn:disabled {
-                    background-color: #3f3f46;
-                    color: #a1a1aa;
-                    cursor: not-allowed;
-                }
-
-                @media (max-width: 768px) {
-                    .form-row {
-                        flex-direction: column;
-                        gap: 0;
-                    }
-                    .admin-panel {
-                        padding: 24px;
-                    }
-                }
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                `
-            }} />
-
-            <div className="admin-header-flex">
-                <Link href="/admin/equipments" className="back-btn" title="Voltar">
-                    <ArrowLeft size={24} />
+        <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-300">
+            {/* Header */}
+            <div className="flex items-center gap-4">
+                <Link
+                    href="/admin/equipments"
+                    className="p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-slate-400 hover:text-white hover:border-zinc-700 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    aria-label="Voltar para a lista de equipamentos"
+                >
+                    <ArrowLeft size={20} />
                 </Link>
-                <h1 className="admin-title">Editar Equipamento</h1>
+                <div>
+                    <h1 className="text-3xl font-black text-white tracking-tight">Editar Equipamento</h1>
+                    <p className="text-slate-400 text-sm">Atualize detalhes, fotos e disponibilidade na loja.</p>
+                </div>
             </div>
 
-            <div className="admin-panel">
-                <form onSubmit={handleSubmit}>
-
+            {/* Form Panel */}
+            <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 sm:p-10">
+                <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Nome */}
-                    <div className="form-group">
-                        <label className="form-label">Nome do Equipamento *</label>
+                    <div>
+                        <label htmlFor="edit-name" className="block text-sm font-bold text-slate-300 mb-2">
+                            Nome do Equipamento *
+                        </label>
                         <input
+                            id="edit-name"
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             disabled={saving}
-                            className="form-control"
+                            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 text-base"
                             placeholder="Ex: Barraca The North Face Alpine"
                             required
                         />
                     </div>
 
                     {/* Preço e Status */}
-                    <div className="form-row">
-                        <div className="form-col">
-                            <div className="form-group">
-                                <label className="form-label">Valor da Diária (R$) *</label>
-                                <div className="price-wrapper">
-                                    <span className="price-symbol">R$</span>
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        min="1"
-                                        value={price}
-                                        onChange={(e) => setPrice(e.target.value)}
-                                        disabled={saving}
-                                        className="form-control"
-                                        placeholder="45.00"
-                                        required
-                                    />
-                                </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label htmlFor="edit-price" className="block text-sm font-bold text-slate-300 mb-2">
+                                Valor da Diária (R$) *
+                            </label>
+                            <div className="relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">R$</span>
+                                <input
+                                    id="edit-price"
+                                    type="number"
+                                    step="0.01"
+                                    min="1"
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    disabled={saving}
+                                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 text-base"
+                                    placeholder="45.00"
+                                    required
+                                />
                             </div>
                         </div>
-                        <div className="form-col">
-                            <div className="form-group">
-                                <label className="form-label">Disponibilidade na Vitrine</label>
-                                <label className="toggle-wrapper">
-                                    <input
-                                        type="checkbox"
-                                        checked={isActive}
-                                        onChange={(e) => setIsActive(e.target.checked)}
-                                        disabled={saving}
-                                        className="toggle-checkbox"
-                                    />
-                                    <span className="toggle-text">Equipamento Ativo</span>
-                                </label>
-                            </div>
+
+                        <div>
+                            <span className="block text-sm font-bold text-slate-300 mb-2">Disponibilidade na Vitrine</span>
+                            <label className="flex items-center gap-3 p-3.5 bg-zinc-900 border border-zinc-800 rounded-xl cursor-pointer hover:border-zinc-700 transition-colors min-h-[48px]">
+                                <input
+                                    type="checkbox"
+                                    checked={isActive}
+                                    onChange={(e) => setIsActive(e.target.checked)}
+                                    disabled={saving}
+                                    className="w-5 h-5 rounded text-blue-600 focus:ring-0 focus:outline-none bg-zinc-950 border-zinc-700"
+                                />
+                                <span className="text-white text-sm font-semibold">Equipamento Ativo</span>
+                            </label>
                         </div>
                     </div>
 
                     {/* Descrição */}
-                    <div className="form-group">
-                        <label className="form-label">Descrição Completa</label>
+                    <div>
+                        <label htmlFor="edit-desc" className="block text-sm font-bold text-slate-300 mb-2">
+                            Descrição Completa
+                        </label>
                         <textarea
+                            id="edit-desc"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             disabled={saving}
-                            className="form-control"
+                            rows={4}
+                            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 text-base leading-relaxed"
                             placeholder="Detalhes técnicos, capacidade, peso, itens inclusos..."
                         />
                     </div>
 
                     {/* Image URLs Input */}
-                    <div className="form-group">
-                        <label className="form-label">Fotos do Produto (Links) *</label>
-                        <p style={{ color: '#71717a', fontSize: '0.875rem', marginBottom: '16px' }}>
+                    <div>
+                        <label className="block text-sm font-bold text-slate-300 mb-1">
+                            Fotos do Produto (Links) *
+                        </label>
+                        <p className="text-slate-400 text-xs mb-4">
                             Cole links diretos para as imagens do equipamento (ex. Imgur, Google Drive, outro site).
                         </p>
 
-                        <div className="url-inputs-container">
+                        <div className="space-y-3">
                             {imageUrls.map((url, index) => (
-                                <div key={index} className="url-input-row">
-                                    <div className="url-input-wrapper">
-                                        <LinkIcon size={20} className="url-icon" />
+                                <div key={index} className="flex items-center gap-3">
+                                    <div className="relative flex-1">
+                                        <label htmlFor={`edit-url-${index}`} className="sr-only">URL da foto {index + 1}</label>
+                                        <LinkIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
                                         <input
+                                            id={`edit-url-${index}`}
                                             type="url"
                                             value={url}
                                             onChange={(e) => handleUrlChange(index, e.target.value)}
                                             disabled={saving}
-                                            className="form-control"
+                                            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-12 pr-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 text-sm"
                                             placeholder="https://exemplo.com/imagem.png"
-                                            required={index === 0} // Only first is strictly required by HTML spec if others are empty
+                                            required={index === 0}
                                         />
                                     </div>
                                     <button
                                         type="button"
                                         onClick={() => removeUrlField(index)}
-                                        className="remove-url-btn"
+                                        className="p-3 bg-zinc-900 hover:bg-red-500/10 hover:text-red-400 text-slate-400 border border-zinc-800 rounded-xl transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0"
                                         disabled={saving}
-                                        title="Remover Link"
+                                        aria-label={`Remover link ${index + 1}`}
                                     >
-                                        <X size={20} />
+                                        <X size={18} />
                                     </button>
                                 </div>
                             ))}
@@ -483,28 +280,30 @@ export default function EditEquipmentPage({ params }: { params: Promise<{ id: st
                             <button
                                 type="button"
                                 onClick={addUrlField}
-                                className="add-url-btn"
+                                className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 font-bold text-sm pt-2 cursor-pointer min-h-[44px]"
                                 disabled={saving}
                             >
-                                <Plus size={18} /> Adicionar outro link
+                                <Plus size={16} /> Adicionar outro link
                             </button>
                         </div>
                     </div>
 
-                    <button
-                        type="submit"
-                        disabled={saving}
-                        className="submit-btn"
-                    >
-                        {saving ? (
-                            <>
-                                <Loader2 size={24} className="animate-spin" />
-                                Salvando alterações...
-                            </>
-                        ) : (
-                            'Salvar Alterações'
-                        )}
-                    </button>
+                    <div className="pt-4 border-t border-zinc-800">
+                        <button
+                            type="submit"
+                            disabled={saving}
+                            className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-600/30 flex items-center justify-center gap-3 cursor-pointer min-h-[52px] text-base"
+                        >
+                            {saving ? (
+                                <>
+                                    <Loader2 size={22} className="animate-spin" />
+                                    Salvando alterações...
+                                </>
+                            ) : (
+                                'Salvar Alterações'
+                            )}
+                        </button>
+                    </div>
 
                 </form>
             </div>

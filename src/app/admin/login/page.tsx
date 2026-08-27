@@ -39,7 +39,7 @@ export default function AdminLogin() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 flex flex-col justify-center px-5 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-black flex flex-col justify-center px-5 sm:px-6 lg:px-8 relative overflow-hidden">
             {/* Background glow */}
             <div className="fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -51,41 +51,43 @@ export default function AdminLogin() {
                     </div>
                 </div>
 
-                <h2 className="text-center text-2xl sm:text-3xl font-extrabold text-white mb-2">
+                <h1 className="text-center text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-tight">
                     Ghost Camp Admin
-                </h2>
+                </h1>
                 <p className="text-center text-sm text-slate-400 mb-10">
                     Acesso restrito à área de gestão
                 </p>
             </div>
 
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-                <div className="glass-card py-8 sm:py-10 px-6 sm:px-10 shadow-2xl" style={{ borderRadius: 'var(--radius-card)' }}>
+                <div className="bg-zinc-950 border border-zinc-800 py-8 sm:py-10 px-6 sm:px-10 rounded-3xl shadow-2xl">
                     <form className="space-y-6" onSubmit={handleLogin}>
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-2">
+                            <label htmlFor="admin-email" className="block text-sm font-semibold text-slate-300 mb-2">
                                 Email / Usuário
                             </label>
                             <input
+                                id="admin-email"
                                 type="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-base"
+                                className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-4 py-3.5 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors text-base min-h-[48px]"
                                 placeholder="admin@ghostcamp.com"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-2">
+                            <label htmlFor="admin-password" className="block text-sm font-semibold text-slate-300 mb-2">
                                 Senha
                             </label>
                             <input
+                                id="admin-password"
                                 type="password"
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-base"
+                                className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl px-4 py-3.5 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors text-base min-h-[48px]"
                                 placeholder="••••••••"
                             />
                         </div>
@@ -99,7 +101,7 @@ export default function AdminLogin() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="magnetic-btn w-full flex justify-center items-center gap-3 py-3 px-6 leading-normal rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-all shadow-[0_0_20px_rgba(234,88,12,0.2)] min-h-[52px] cursor-pointer"
+                            className="w-full flex justify-center items-center gap-3 py-3.5 px-6 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-all shadow-lg shadow-blue-600/30 min-h-[52px] cursor-pointer"
                         >
                             {loading ? (
                                 <>

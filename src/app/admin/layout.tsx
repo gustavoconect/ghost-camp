@@ -20,7 +20,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const router = useRouter();
     const [mobileOpen, setMobileOpen] = useState(false);
 
-    // Lock body scroll when mobile menu is open
     useEffect(() => {
         if (mobileOpen) {
             document.body.style.overflow = 'hidden';
@@ -30,7 +29,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         return () => { document.body.style.overflow = ''; };
     }, [mobileOpen]);
 
-    // Não renderiza o menu lateral na tela de login
     if (pathname === '/admin/login') {
         return <>{children}</>;
     }
@@ -54,196 +52,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     ];
 
     return (
-        <div className="admin-root">
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                .admin-root {
-                    display: flex;
-                    flex-direction: column;
-                    width: 100vw;
-                    min-height: 100vh;
-                    background: #000;
-                    color: #fff;
-                    font-family: inherit;
-                }
-                .admin-container {
-                    display: flex;
-                    flex: 1;
-                    position: relative;
-                }
-                
-                /* ========================
-                   SIDEBAR (DESKTOP)
-                   ======================== */
-                .admin-sidebar {
-                    width: 280px;
-                    background-color: #09090b; /* zinc-950 */
-                    border-right: 1px solid #27272a; /* zinc-800 */
-                    display: flex;
-                    flex-direction: column;
-                    position: sticky;
-                    top: 0;
-                    height: 100vh;
-                }
-                .admin-sidebar-header {
-                    height: 80px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-bottom: 1px solid #27272a;
-                    font-size: 1.5rem;
-                    font-weight: 900;
-                    letter-spacing: 0.1em;
-                    text-transform: uppercase;
-                }
-                .brand-blue {
-                    color: #3b82f6; /* blue-500 */
-                }
-                .admin-nav {
-                    flex: 1;
-                    padding: 32px 16px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 8px;
-                    overflow-y: auto;
-                }
-                .admin-nav-link {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    padding: 14px 16px;
-                    border-radius: 12px;
-                    color: #94a3b8; /* slate-400 */
-                    text-decoration: none;
-                    transition: all 0.2s ease;
-                    font-weight: 500;
-                }
-                .admin-nav-link:hover {
-                    background-color: #27272a; /* zinc-800 */
-                    color: #fff;
-                }
-                .admin-nav-link.active {
-                    background-color: #2563eb; /* blue-600 */
-                    color: #fff;
-                    font-weight: bold;
-                    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
-                }
-                .admin-logout-box {
-                    padding: 16px;
-                    border-top: 1px solid #27272a;
-                }
-                .admin-logout-btn {
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    padding: 14px 16px;
-                    border-radius: 12px;
-                    color: #94a3b8;
-                    cursor: pointer;
-                    background: transparent;
-                    border: none;
-                    transition: all 0.2s ease;
-                    font-size: 1rem;
-                }
-                .admin-logout-btn:hover {
-                    color: #f87171;
-                    background-color: rgba(248, 113, 113, 0.1);
-                }
-
-                /* ========================
-                   MAIN CONTENT
-                   ======================== */
-                .admin-main {
-                    flex: 1;
-                    padding: 48px;
-                    max-width: 1450px;
-                    margin: 0 auto;
-                    width: 100%;
-                }
-
-                /* ========================
-                   MOBILE MODIFIERS
-                   ======================== */
-                .mobile-topbar {
-                    display: none;
-                    height: 64px;
-                    background-color: #09090b;
-                    border-bottom: 1px solid #27272a;
-                    align-items: center;
-                    justify-content: space-between;
-                    padding: 0 20px;
-                    position: sticky;
-                    top: 0;
-                    z-index: 50;
-                }
-                .mobile-toggle {
-                    background: none;
-                    border: none;
-                    color: #94a3b8;
-                    cursor: pointer;
-                    padding: 8px;
-                }
-                .mobile-backdrop {
-                    display: none;
-                    position: fixed;
-                    inset: 0;
-                    background: rgba(0,0,0,0.6);
-                    z-index: 30;
-                }
-
-                @media (max-width: 1024px) {
-                    .admin-sidebar {
-                        position: fixed;
-                        top: 0;
-                        left: -100%;
-                        z-index: 40;
-                        transition: left 0.3s ease;
-                    }
-                    .admin-sidebar.open {
-                        left: 0;
-                    }
-                    .mobile-topbar {
-                        display: flex;
-                    }
-                    .mobile-backdrop.open {
-                        display: block;
-                    }
-                    .admin-main {
-                        padding: 32px 20px;
-                    }
-                }
-                `
-            }} />
-
+        <div className="flex flex-col w-full min-h-screen bg-black text-white">
             {/* Mobile Top Bar */}
-            <div className="mobile-topbar">
+            <header className="lg:hidden h-16 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between px-5 sticky top-0 z-50">
                 <span className="text-xl font-black text-white">
-                    Ghost<span className="brand-blue">Camp</span> Admin
+                    Ghost<span className="text-blue-500">Camp</span> Admin
                 </span>
                 <button
                     onClick={() => setMobileOpen(!mobileOpen)}
-                    className="mobile-toggle"
-                    aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
+                    className="text-slate-400 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer hover:text-white"
+                    aria-label={mobileOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
                 >
-                    {mobileOpen ? <X size={28} /> : <Menu size={28} />}
+                    {mobileOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
-            </div>
+            </header>
 
             {/* Backdrop overlay mobile */}
             <div
-                className={`mobile-backdrop ${mobileOpen ? 'open' : ''}`}
+                className={`fixed inset-0 bg-black/60 z-30 transition-opacity duration-300 ${mobileOpen ? 'block opacity-100' : 'hidden opacity-0 pointer-events-none'}`}
                 onClick={() => setMobileOpen(false)}
             />
 
-            <div className="admin-container">
+            <div className="flex flex-1 relative w-full">
                 {/* Sidebar */}
-                <aside className={`admin-sidebar ${mobileOpen ? 'open' : ''}`}>
-                    <div className="admin-sidebar-header">
-                        Ghost<span className="brand-blue">Camp</span>
+                <aside className={`w-[280px] bg-zinc-950 border-r border-zinc-800 flex flex-col h-screen sticky top-0 max-lg:fixed max-lg:top-0 max-lg:z-40 transition-all duration-300 shrink-0 ${mobileOpen ? 'max-lg:left-0' : 'max-lg:-left-full'}`}>
+                    <div className="h-20 flex items-center justify-center border-b border-zinc-800 text-2xl font-black tracking-widest uppercase">
+                        Ghost<span className="text-blue-500">Camp</span>
                     </div>
 
-                    <nav className="admin-nav">
+                    <nav className="flex-1 p-6 py-6 flex flex-col gap-2 overflow-y-auto">
                         {menuItems.map((item) => {
                             const active = pathname.startsWith(item.href);
                             const Icon = item.icon;
@@ -252,7 +89,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     key={item.href}
                                     href={item.href}
                                     onClick={() => setMobileOpen(false)}
-                                    className={`admin-nav-link ${active ? 'active' : ''}`}
+                                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 min-h-[44px] ${active ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/25' : 'text-slate-300 hover:bg-zinc-800 hover:text-white font-medium'}`}
                                 >
                                     <Icon size={20} />
                                     {item.label}
@@ -261,8 +98,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         })}
                     </nav>
 
-                    <div className="admin-logout-box">
-                        <button onClick={handleLogout} className="admin-logout-btn">
+                    <div className="p-4 border-t border-zinc-800">
+                        <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-slate-300 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 text-base cursor-pointer min-h-[44px]">
                             <LogOut size={20} />
                             Sair do Sistema
                         </button>
@@ -270,7 +107,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </aside>
 
                 {/* Main Content */}
-                <main className="admin-main">
+                <main className="flex-1 p-6 sm:p-8 lg:p-12 max-w-[1450px] mx-auto w-full">
                     {children}
                 </main>
             </div>

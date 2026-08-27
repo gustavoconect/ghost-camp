@@ -38,11 +38,11 @@ const faqs = [
     icon: MapPin,
     title: 'Retirada e Devolução',
     content: (
-      <ul className="space-y-4 text-sm text-slate-400">
-        <li><strong className="text-slate-200">Retirada presencial:</strong> Com horário agendado em nosso ponto.</li>
-        <li><strong className="text-slate-200">Entrega por parceiro:</strong> Enviamos via parceiro (solicite cotação com endereço).</li>
-        <li><strong className="text-slate-200">Aplicativo (Uber/99):</strong> Solicite um motorista. Responsabilidade do cliente.</li>
-        <li><strong className="text-slate-200">Ponto alternativo:</strong> Retirada em local parceiro (mediante agendamento).</li>
+      <ul className="space-y-4 text-sm text-slate-300">
+        <li><strong className="text-white">Retirada presencial:</strong> Com horário agendado em nosso ponto.</li>
+        <li><strong className="text-white">Entrega por parceiro:</strong> Enviamos via parceiro (solicite cotação com endereço).</li>
+        <li><strong className="text-white">Aplicativo (Uber/99):</strong> Solicite um motorista. Responsabilidade do cliente.</li>
+        <li><strong className="text-white">Ponto alternativo:</strong> Retirada em local parceiro (mediante agendamento).</li>
       </ul>
     )
   },
@@ -50,7 +50,7 @@ const faqs = [
     icon: CalendarDays,
     title: 'Como funcionam as diárias?',
     content: (
-      <div className="text-sm text-slate-400 space-y-4">
+      <div className="text-sm text-slate-300 space-y-4">
         <p>A diária corresponde ao uso do equipamento por um dia completo. Pacotes de fim de semana:</p>
         <ul className="space-y-2">
           <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> <strong>Sexta a segunda:</strong> 3 diárias</li>
@@ -63,13 +63,13 @@ const faqs = [
     icon: Banknote,
     title: 'Formas de Pagamento',
     content: (
-      <div className="text-sm text-slate-400 space-y-3">
+      <div className="text-sm text-slate-300 space-y-3">
         <p>Trabalhamos com Pix ou transferência bancária:</p>
         <ul className="space-y-2">
           <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> 50% na reserva</li>
           <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> 50% até a retirada</li>
         </ul>
-        <p className="text-xs text-slate-500 mt-2">* Pagamento no cartão disponível (com taxas da operadora).</p>
+        <p className="text-xs text-slate-400 mt-2">* Pagamento no cartão disponível (com taxas da operadora).</p>
       </div>
     )
   },
@@ -77,15 +77,15 @@ const faqs = [
     icon: Clock,
     title: 'Horários de Atendimento',
     content: (
-      <ul className="space-y-3 text-sm text-slate-400">
+      <ul className="space-y-3 text-sm text-slate-300">
         <li className="flex justify-between border-b border-slate-800/50 pb-2">
-          <span>Segunda a sexta</span><span className="text-slate-200">Comercial</span>
+          <span>Segunda a sexta</span><span className="text-white">Comercial</span>
         </li>
         <li className="flex justify-between border-b border-slate-800/50 pb-2">
-          <span>Sábados</span><span className="text-slate-200">Reduzido</span>
+          <span>Sábados</span><span className="text-white">Reduzido</span>
         </li>
         <li className="flex justify-between pb-2">
-          <span>Domingos e Feriados</span><span className="text-slate-200">Sob consulta</span>
+          <span>Domingos e Feriados</span><span className="text-white">Sob consulta</span>
         </li>
       </ul>
     )
@@ -99,8 +99,9 @@ function AccordionItem({ item, isOpen, onClick }: { item: any, isOpen: boolean, 
   return (
     <div className="border-b border-slate-800/60 overflow-hidden">
       <button
-        className="w-full flex items-center justify-between py-6 text-left group transition-colors hover:text-blue-400 outline-none"
+        className="w-full flex items-center justify-between py-6 min-h-[44px] text-left group transition-colors hover:text-blue-400 outline-none cursor-pointer"
         onClick={onClick}
+        aria-expanded={isOpen}
       >
         <div className="flex items-center gap-4">
           <div className={`p-2 rounded-xl transition-colors duration-300 ${isOpen ? 'bg-blue-500/10 text-blue-400' : 'bg-slate-900/50 text-slate-400 group-hover:text-blue-400'}`}>
@@ -110,7 +111,7 @@ function AccordionItem({ item, isOpen, onClick }: { item: any, isOpen: boolean, 
             {item.title}
           </h4>
         </div>
-        <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
       <div
         ref={contentRef}
@@ -131,6 +132,12 @@ export default function HowItWorksSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        gsap.set(['.how-header', '.step-item', '.accordion-container'], { opacity: 1, y: 0 });
+        return;
+      }
+
       gsap.fromTo('.how-header',
         { y: 44, opacity: 0 },
         {
@@ -147,7 +154,7 @@ export default function HowItWorksSection() {
         }
       );
 
-      // Steps entrance (lines and numbers)
+      // Steps entrance
       gsap.fromTo('.step-item',
         { y: 30, opacity: 0 },
         {
@@ -209,12 +216,11 @@ export default function HowItWorksSection() {
                 <div className="hidden lg:block absolute top-6 left-[50%] right-[-50%] h-px bg-slate-800/60 group-hover:bg-blue-500/30 transition-colors duration-500" />
               )}
 
-
-              <div className="text-5xl lg:text-6xl font-bold text-slate-800/80 group-hover:text-blue-500/40 transition-colors duration-300 mb-8 font-mono tracking-tighter relative z-10 bg-[#0a0a0a] px-6">
+              <div className="text-5xl lg:text-6xl font-bold text-slate-500 group-hover:text-blue-400 transition-colors duration-300 mb-8 font-mono tracking-tighter relative z-10 bg-[#0a0a0a] px-6">
                 {String(idx + 1).padStart(2, '0')}
               </div>
               <h3 className="text-xl font-bold text-white mb-4">{step.title}</h3>
-              <p className="text-slate-400 text-sm leading-relaxed max-w-[280px]">{step.description}</p>
+              <p className="text-slate-300 text-sm leading-relaxed max-w-[280px]">{step.description}</p>
             </div>
           ))}
         </div>
@@ -234,10 +240,10 @@ export default function HowItWorksSection() {
             ))}
           </div>
 
-          {/* Outro Text (Tudo pensado para a sua logística) */}
+          {/* Outro Text */}
           <div className="text-center accordion-container w-full">
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">Tudo pensado para a sua logística.</h3>
-            <p className="text-slate-400 text-base leading-relaxed max-w-2xl mx-auto">
+            <p className="text-slate-300 text-base leading-relaxed max-w-2xl mx-auto">
               Oferecemos diversas opções de retirada, pagamento e flexibilidade de diárias para que você só se preocupe com o destino.
             </p>
           </div>

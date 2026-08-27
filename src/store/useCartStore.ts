@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { Equipment } from '@/types';
-import { differenceInDays, startOfDay } from 'date-fns';
 
 export interface CartItem extends Equipment {
     quantity: number;

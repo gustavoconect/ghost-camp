@@ -18,6 +18,8 @@ function DoubleHelixGear() {
   useEffect(() => {
     if (!svgRef.current) return;
     const ctx = gsap.context(() => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
       gsap.to('.helix-gear-a', { rotation: 360, transformOrigin: '50% 50%', duration: 8, repeat: -1, ease: 'linear' });
       gsap.to('.helix-gear-b', { rotation: -360, transformOrigin: '50% 50%', duration: 12, repeat: -1, ease: 'linear' });
     }, svgRef);
@@ -54,12 +56,13 @@ function DoubleHelixGear() {
   );
 }
 
-
 function EKGWaveform() {
   const svgRef = useRef<SVGSVGElement>(null);
   useEffect(() => {
     if (!svgRef.current) return;
     const ctx = gsap.context(() => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
       const path = svgRef.current?.querySelector('.ekg-path') as SVGPathElement;
       if (path) {
         const length = path.getTotalLength();
@@ -127,6 +130,12 @@ export default function Home() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        gsap.set(['.hero-badge', '.hero-title', '.hero-subtitle', '.hero-cta', '.trust-badge', '.home-section-heading', '.feature-card'], { opacity: 1, y: 0 });
+        return;
+      }
+
       // Hero parallax on scroll
       gsap.to('.hero-image', {
         y: 80,
@@ -166,12 +175,10 @@ export default function Home() {
       // Stacking cards with ScrollTrigger + sticky positioning
       const cards = gsap.utils.toArray<HTMLElement>('.feature-card');
       cards.forEach((card, i) => {
-        // Each card stacks with a slight offset
         const topOffset = 100 + i * 30;
         card.style.position = 'sticky';
         card.style.top = `${topOffset}px`;
 
-        // O card anterior só começa a esmaecer quando o próximo já está bem visível (60%)
         if (i < cards.length - 1) {
           gsap.to(card, {
             scale: 0.93,
@@ -186,7 +193,6 @@ export default function Home() {
           });
         }
 
-        // Entrance animation per card
         gsap.fromTo(card,
           { y: 60, opacity: 0 },
           {
@@ -261,7 +267,7 @@ export default function Home() {
           <div className="hero-cta flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/catalogo"
-              className="magnetic-btn slide-bg bg-blue-600 text-white font-bold rounded-2xl inline-flex items-center justify-center gap-3 leading-normal hover:bg-blue-500 transition-all shadow-[0_0_30px_rgba(37,99,235,0.4)] group shrink-0"
+              className="magnetic-btn slide-bg bg-blue-600 text-white font-bold rounded-2xl inline-flex items-center justify-center gap-3 leading-normal hover:bg-blue-500 transition-all shadow-[0_0_30px_rgba(37,99,235,0.4)] group shrink-0 min-h-[48px]"
               style={{ padding: '16px 32px' }}
             >
               Ver Equipamentos
@@ -274,8 +280,8 @@ export default function Home() {
             {trustBadges.map((badge) => {
               const Icon = badge.icon;
               return (
-                <div key={badge.label} className="trust-badge flex items-center gap-2 text-slate-300/70">
-                  <Icon className="w-4 h-4 text-blue-500/70" />
+                <div key={badge.label} className="trust-badge flex items-center gap-2 text-slate-300">
+                  <Icon className="w-4 h-4 text-blue-500" />
                   <span className="text-xs sm:text-sm font-medium">{badge.label}</span>
                 </div>
               );
@@ -322,7 +328,7 @@ export default function Home() {
                     className="feature-card stacking-card glass-card flex flex-col items-center gap-12 lg:grid lg:grid-cols-2 lg:gap-24 w-full"
                     style={{ borderRadius: 'var(--radius-card)', padding: '64px' }}
                   >
-                    {/* Artifact side — sempre primeiro no mobile, grande e centralizado */}
+                    {/* Artifact side */}
                     <div className={`flex items-center justify-center w-full ${idx % 2 === 1 ? 'lg:order-2' : 'lg:order-1'}`}>
                       <div className={`w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 ${colors.bg} border ${colors.border} rounded-3xl flex items-center justify-center p-6 sm:p-8`}>
                         <div className="w-full h-full opacity-80">
@@ -362,7 +368,7 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
         <div ref={ctaRef} className="w-full max-w-3xl mx-auto px-6 sm:px-10 text-center relative z-10 flex flex-col items-center">
-          <p className="text-blue-500/80 text-sm font-bold uppercase tracking-widest mb-4">
+          <p className="text-blue-500 text-sm font-bold uppercase tracking-widest mb-4">
             Comece Agora
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
@@ -370,12 +376,12 @@ export default function Home() {
             <br className="hidden sm:block" />
             <span className="text-blue-500"> Começa Aqui</span>
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg leading-relaxed mb-10 sm:mb-12 max-w-xl mx-auto">
+          <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-10 sm:mb-12 max-w-xl mx-auto">
             Escolha seus equipamentos, defina o período e finalize pelo WhatsApp. Sem complicação, sem burocracia.
           </p>
           <Link
             href="/catalogo"
-            className="magnetic-btn slide-bg inline-flex items-center justify-center gap-3 leading-normal bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-500 transition-all shadow-[0_0_40px_rgba(37,99,235,0.3)] group text-xl mx-auto shrink-0 whitespace-nowrap"
+            className="magnetic-btn slide-bg inline-flex items-center justify-center gap-3 leading-normal bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-500 transition-all shadow-[0_0_40px_rgba(37,99,235,0.3)] group text-xl mx-auto shrink-0 whitespace-nowrap min-h-[52px]"
             style={{ padding: '16px 32px' }}
           >
             Explorar Catálogo

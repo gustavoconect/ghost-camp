@@ -1,9 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { db, storage } from '@/lib/firebase';
-import { collection, addDoc, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { RefreshCcw, CheckCircle2, AlertCircle } from 'lucide-react';
 
 const products = [

@@ -36,21 +36,21 @@ export function Navbar() {
         <header
             className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled
                 ? 'bg-black backdrop-blur-3xl shadow-2xl border-b border-white/20 py-3 sm:py-4'
-                : 'bg-black/85 backdrop-blur-md py-4 sm:py-8 border-b border-transparent'
+                : 'bg-black/85 backdrop-blur-md py-4 sm:py-6 border-b border-transparent'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
                 <div className="flex items-center justify-between w-full">
 
                     {/* Left: Logo */}
-                    <Link href="/" className="flex items-center gap-2 group magnetic-btn shrink-0 z-10 hover:scale-105 transition-transform">
-                        <div className="relative w-10 h-10 sm:w-14 sm:h-14 transition-all duration-300">
+                    <Link href="/" className="flex items-center gap-2 group magnetic-btn shrink-0 z-10 hover:scale-105 transition-transform min-h-[44px]">
+                        <div className="relative w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300">
                             <Image
                                 src="/ghost_camp_premium_logo.png"
                                 alt="Ghost Camp Logo"
                                 fill
                                 className="object-contain drop-shadow-lg"
-                                sizes="(max-width: 640px) 40px, 56px"
+                                sizes="(max-width: 640px) 40px, 48px"
                             />
                         </div>
                         <span className="text-xl font-black tracking-tight text-white drop-shadow-md hidden md:block">
@@ -58,20 +58,19 @@ export function Navbar() {
                         </span>
                     </Link>
 
-                    {/* Right/Center: Horizontal Nav (Flex-1 allows centering properly between logo and end on mobile) */}
+                    {/* Right/Center: Horizontal Nav */}
                     <nav className="flex-1 flex justify-center sm:justify-end items-center gap-1 sm:gap-6 lg:gap-8">
-                        <div className="flex items-center gap-1 sm:gap-6 shrink-0">
+                        <div className="flex items-center gap-1 sm:gap-4 shrink-0">
                             {navLinks.map((link) => {
                                 const isActive = pathname === link.href;
                                 return (
                                     <Link
                                         key={link.href}
                                         href={link.href}
-                                        className={`magnetic-btn slide-bg rounded-full font-black transition-all text-xs sm:text-base uppercase drop-shadow-sm flex items-center justify-center leading-normal shrink-0 ${isActive
+                                        className={`magnetic-btn slide-bg rounded-full font-black transition-all text-xs sm:text-sm uppercase drop-shadow-sm flex items-center justify-center leading-normal shrink-0 min-h-[44px] px-5 py-2.5 ${isActive
                                             ? '!text-white bg-white/10 shadow-[0_0_30px_rgba(255,255,255,0.08)] border border-white/20'
-                                            : '!text-white hover:bg-white/5 border border-transparent hover:border-white/10'
+                                            : '!text-slate-300 hover:!text-white hover:bg-white/5 border border-transparent hover:border-white/10'
                                             }`}
-                                        style={{ padding: '10px 24px' }}
                                     >
                                         {link.label}
                                     </Link>
@@ -84,7 +83,7 @@ export function Navbar() {
                         {/* Cart Button */}
                         <Link
                             href="/mochila"
-                            className="relative flex items-center justify-center glass p-2.5 sm:p-3 rounded-full hover:bg-blue-600 hover:border-blue-500 transition-all cursor-pointer group"
+                            className="relative flex items-center justify-center glass p-2.5 sm:p-3 rounded-full hover:bg-blue-600 hover:border-blue-500 transition-all cursor-pointer group min-w-[44px] min-h-[44px]"
                             aria-label="Ver mochila"
                         >
                             <ShoppingBag className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
